@@ -1,0 +1,49 @@
+  <ion-split-pane content-id="main">
+    <ion-menu content-id="main">
+
+      <ion-header class="ion-no-border">
+        <ion-toolbar color="white">
+          <ion-item lines="none" color="white" routerLink="/">
+            <ion-img src="assets/icon/favicon.png"></ion-img>
+            <ion-title>A <strong>Força</strong></ion-title>
+            <small>v1.0</small>
+          </ion-item>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list lines="none">
+          <ion-menu-toggle auto-hide="false">
+            <ion-item button routerLink="/employee" routerLinkActive="active-menu">
+              <ion-icon name="people-outline" slot="start" class="icon-active-menu"></ion-icon>
+              Que trabalham
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item button routerLink="/contract" routerLinkActive="active-menu">
+              <ion-icon name="document-text-outline" slot="start" class="icon-active-menu"></ion-icon>
+              Contratos
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item button routerLink="/employer" routerLinkActive="active-menu">
+              <ion-icon name="briefcase-outline" slot="start" class="icon-active-menu"></ion-icon>
+              Contratantes
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item button routerLink="/job" routerLinkActive="active-menu">
+              <ion-icon name="hammer-outline" slot="start" class="icon-active-menu"></ion-icon>
+              Serviços
+            </ion-item>
+          </ion-menu-toggle>
+
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <ion-router-outlet id="main"></ion-router-outlet>
+  </ion-split-pane>

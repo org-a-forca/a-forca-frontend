@@ -1,0 +1,16 @@
+<ion-toolbar color="secondary">
+  <ion-title>{{title}}</ion-title>
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/"></ion-back-button>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button shape="round" (click)="this.edit.emit()">
+      <ion-icon slot="start" name="create-outline"></ion-icon>
+      Editar  
+    </ion-button>
+    <ion-button shape="round" (click)="this.delete.emit()">
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Excluir
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

@@ -1,0 +1,46 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-details title="Detalhes" (edit)="onEdit()" (delete)="onDelete()"></app-toolbar-details>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="employee">
+
+    <div class="ion-text-center container">
+      <ion-item-divider>
+        <ion-label>Dados pessoais</ion-label>
+      </ion-item-divider>
+      <ion-list lines="none">
+        <app-item iconName="information-circle-outline" label="Nome" [value]="employee.name"></app-item>
+        <app-item iconName="call-outline" label="Telefone" [value]="employee.phone"></app-item>
+        <app-item iconName="home-outline" label="Endereço" [value]="employee.address"></app-item>
+        <app-item iconName="mail-outline" label="Email" [value]="employee.email"></app-item>
+      </ion-list>
+    </div>
+
+    <div class="ion-text-center container">
+      <ion-item-divider>
+        <ion-label>Dados profissionais</ion-label>
+      </ion-item-divider>
+      <ion-list lines="none">
+        <app-item iconName="hammer-outline" label="Serviço(s)" [value]="employee | jobs"></app-item>
+        <app-item iconName="star-outline" label="Nível" [value]="employee.level | num2str"></app-item>
+        <app-item iconName="calendar-outline" label="Data do cadastro"
+          [value]="employee.registeredAt | date:'dd/MM/yyyy'"></app-item>
+        <app-item iconName="reader-outline" label="Último contrato"
+          [value]="employee.lastContractAt | date:'dd/MM/yyyy'"></app-item>
+        <app-item iconName="people-outline" label="Referências" [value]="employee.references"></app-item>
+        <app-item iconName="remove-circle-outline" label="Restrições" [value]="employee.constraints"></app-item>
+      </ion-list>
+    </div>
+
+    <div class="ion-text-center container">
+      <ion-item-divider>
+        <ion-label>Outras informações</ion-label>
+      </ion-item-divider>
+      <ion-list lines="none">
+        <app-item iconName="document-text-outline" label="Observações" [value]="employee.obs"></app-item>
+      </ion-list>
+    </div>
+
+  </div>
+</ion-content>

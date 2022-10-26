@@ -1,0 +1,7 @@
+<ion-item class="ion-align-items-center" lines="none">
+  <ion-icon slot="start" [name]="iconName"></ion-icon>
+  <ion-label [class.ion-text-wrap]="wrap">
+    <p>{{label}}</p>
+    <h2>{{value && value !== '' ? value : defaultValue}}</h2>
+  </ion-label>
+</ion-item>

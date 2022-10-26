@@ -1,0 +1,7 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-list title="Que trabalham" (add)="onAdd()"></app-toolbar-list>
+</ion-header>
+
+<ion-content>
+  <app-employee-list-item [employees]="employees" (select)="onSelect($event)"></app-employee-list-item>
+</ion-content>

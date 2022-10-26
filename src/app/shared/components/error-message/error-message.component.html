@@ -1,0 +1,12 @@
+<div class="ion-text-center error container" *ngIf="problem">
+  <ion-item-divider lines="none">
+    <ion-label>{{problem.message}}</ion-label>
+  </ion-item-divider>
+
+  <ion-item lines="none">
+    <ion-label class="ion-text-wrap">
+      <p *ngFor="let field of problem.fields" ><strong>{{field.name}}</strong>: {{field.message}}</p>
+    </ion-label>
+  </ion-item>
+  
+</div>

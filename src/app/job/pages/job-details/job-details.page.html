@@ -1,0 +1,21 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-details title="Detalhes" (edit)="onEdit()" (delete)="onDelete()"></app-toolbar-details>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="job">
+
+    <div class="ion-text-center container">
+      <ion-list lines="none">
+        <app-item iconName="information-circle-outline" label="Nome" [value]="job.name">
+        </app-item>
+
+        <app-item iconName="layers-outline" label="Categoria" [value]="job.category.name">
+        </app-item>
+
+      </ion-list>
+    </div>
+
+  </div>
+
+</ion-content>

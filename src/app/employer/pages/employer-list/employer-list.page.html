@@ -1,0 +1,10 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-list title="Contratantes" (add)="onAdd()"></app-toolbar-list>
+</ion-header>
+
+<ion-content>
+
+  <app-employer-list-item [employers]="employers" (select)="onSelect($event)"></app-employer-list-item>
+
+
+</ion-content>

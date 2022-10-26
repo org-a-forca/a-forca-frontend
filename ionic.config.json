@@ -1,0 +1,7 @@
+{
+  "name": "a-forca-admin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

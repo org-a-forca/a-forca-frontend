@@ -1,0 +1,31 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-details title="Detalhes" (edit)="onEdit()" (delete)="onDelete()"></app-toolbar-details>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="employer">
+
+    <div class="ion-text-center container">
+      <ion-item-divider>
+        <ion-label>Dados pessoais</ion-label>
+      </ion-item-divider>
+      <ion-list lines="none">
+        <app-item iconName="information-circle-outline" label="Nome" [value]="employer.name"></app-item>
+        <app-item iconName="call-outline" label="Telefone" [value]="employer.phone"></app-item>
+        <app-item iconName="home-outline" label="Endereço" [value]="employer.address"></app-item>
+        <app-item iconName="mail-outline" label="Email" [value]="employer.email"></app-item>
+      </ion-list>
+    </div>
+
+    <div class="ion-text-center container">
+      <ion-item-divider>
+        <ion-label>Outras informações</ion-label>
+      </ion-item-divider>
+      <ion-list lines="none">
+        <app-item iconName="calendar-outline" label="Data do cadastro" [value]="employer.registeredAt | date:'dd/MM/yyyy'"></app-item>
+        <app-item iconName="document-text-outline" label="Observações" [value]="employer.obs"></app-item>
+      </ion-list>
+    </div>
+  </div>
+
+</ion-content>

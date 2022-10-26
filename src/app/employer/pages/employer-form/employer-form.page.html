@@ -1,0 +1,61 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-form-data title="Formulário" (save)="onSave()"></app-toolbar-form-data>
+</ion-header>
+
+<ion-content>
+  <app-error-message [problem]="problem"></app-error-message>
+
+  <div class="ion-margin">
+    <ion-label><small>* Campos obrigatórios</small></ion-label>
+  </div>
+
+  <div class="ion-text-center container">
+    <ion-item-divider>
+      <ion-label>Dados pessoais</ion-label>
+    </ion-item-divider>
+    <ion-list lines="none">
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Nome *</ion-label>
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: José da Silva" [(ngModel)]="employer.name"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Telefone *</ion-label>
+        <ion-icon slot="start" name="call-outline"></ion-icon>
+        <ion-input type="text" [brmasker]="{phone: true}" placeholder="Por exemplo: (35) 99999-0000"
+          [(ngModel)]="employer.phone"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Endereço</ion-label>
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: Rua das Acácias, 99 - Cidade Jardim"
+          [(ngModel)]="employer.address">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Email</ion-label>
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: contratante@email.com" [(ngModel)]="employer.email">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div class="ion-text-center container">
+    <ion-item-divider>
+      <ion-label>Outras informações</ion-label>
+    </ion-item-divider>
+    <ion-list lines="none">
+     
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Observações</ion-label>
+        <ion-icon slot="start" name="document-text-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: Trabalha na UFLA" [(ngModel)]="employer.obs">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,7 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-list title="Serviços" (add)="onAdd()"></app-toolbar-list>
+</ion-header>
+
+<ion-content>
+  <app-job-list-item [jobs]="jobs" (select)="onSelect($event)"></app-job-list-item>
+</ion-content>

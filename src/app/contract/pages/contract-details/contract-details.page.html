@@ -1,0 +1,33 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-details title="Detalhes" (edit)="onEdit()" (delete)="onDelete()"></app-toolbar-details>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="contract">
+
+    <div class="ion-text-center container">
+      <ion-item-divider>
+        <ion-label>Dados contratuais</ion-label>
+      </ion-item-divider>
+      <ion-list lines="none">
+        <app-item iconName="information-circle-outline" label="Descrição" [value]="contract.description"></app-item>
+        <app-item iconName="hammer-outline" label="Quem trabalhou" [value]="contract.employee.name"></app-item>
+        <app-item iconName="briefcase-outline" label="Contratante" [value]="contract.employer.name"></app-item>
+        <app-item iconName="calendar-outline" label="Data" [value]="contract.date | date:'dd/MM/yyyy'"></app-item>
+        <app-item iconName="scale-outline" label="Status" [value]="contract.status | contractStatus"></app-item>
+      </ion-list>
+    </div>
+
+    <div class="ion-text-center container">
+      <ion-item-divider>
+        <ion-label>Avaliação do contrato</ion-label>
+      </ion-item-divider>
+      <ion-list lines="none">
+        <app-item iconName="star-outline" label="Nota de quem trabalhou" [value]="contract.result.employeeRating | num2str"></app-item>
+        <app-item iconName="star-outline" label="Nota do(a) contratante" [value]="contract.result.employerRating | num2str"></app-item>
+        <app-item iconName="document-text-outline" label="Observações" [value]="contract.result.obs"></app-item>
+      </ion-list>
+    </div>
+
+  </div>
+</ion-content>

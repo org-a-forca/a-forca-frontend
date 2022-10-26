@@ -1,0 +1,125 @@
+<ion-header class="ion-no-border">
+  <app-toolbar-form-data title="Formulário" (save)="onSave()"></app-toolbar-form-data>
+</ion-header>
+
+<ion-content>
+  <app-error-message [problem]="problem"></app-error-message>
+
+  <div class="ion-margin">
+    <ion-label><small>* Campos obrigatórios</small></ion-label>
+  </div>
+
+  <div class="ion-text-center container">
+    <ion-item-divider>
+      <ion-label>Dados pessoais</ion-label>
+    </ion-item-divider>
+    <ion-list>
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Nome *</ion-label>
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: José da Silva" [(ngModel)]="employee.name"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Telefone *</ion-label>
+        <ion-icon slot="start" name="call-outline"></ion-icon>
+        <ion-input type="text" [brmasker]="{phone: true}" placeholder="Por exemplo: (35) 99999-0000"
+          [(ngModel)]="employee.phone"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Endereço</ion-label>
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: Rua das Acácias, 99 - Cidade Jardim"
+          [(ngModel)]="employee.address">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Email</ion-label>
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: contratante@email.com" [(ngModel)]="employee.email">
+        </ion-input>
+      </ion-item>
+
+    </ion-list>
+  </div>
+
+
+  <div class="ion-text-center container">
+    <ion-item-divider>
+      <ion-label>Dados profissionais</ion-label>
+    </ion-item-divider>
+    <ion-list>
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Referências</ion-label>
+        <ion-icon slot="start" name="people-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: Gralha Azul" [(ngModel)]="employee.references"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Restrições</ion-label>
+        <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: Disponível apenas às terças e quintas"
+          [(ngModel)]="employee.constraints">
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label>Serviço(s)</ion-label>
+        <ion-icon slot="start" name="hammer-outline"></ion-icon>
+        <ion-buttons slot="end">
+          <ion-button shape="round" color="primary" id="modal-job">
+            <ion-icon slot="start" name="search"></ion-icon>
+            Buscar
+          </ion-button>
+        </ion-buttons>
+
+        <ion-modal #modalJob trigger="modal-job">
+          <ng-template>
+            <ion-header class="ion-no-border">
+              <ion-toolbar color="secondary">
+                <ion-title>Serviços</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button shape="round" (click)="modalJob.dismiss()">
+                    <ion-icon slot="start" name="close"></ion-icon>
+                    Fechar
+                  </ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+              <app-job-list-item [jobs]="jobs" (select)="onSelectJob($event)"></app-job-list-item>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+
+      <ion-item lines="none" *ngFor="let job of employee.jobs">
+        <ion-icon slot="start" name="chevron-forward-outline"></ion-icon>
+        <ion-label>
+          {{job.name}}
+        </ion-label>
+        <ion-button slot="end" color="primary" fill="clear" (click)="onRemoveJob(job.id)">
+          <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+
+  <div class="ion-text-center container">
+    <ion-item-divider>
+      <ion-label>Outras informações</ion-label>
+    </ion-item-divider>
+    <ion-list>
+      <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
+        <ion-label position="stacked">Observações</ion-label>
+        <ion-icon slot="start" name="document-text-outline"></ion-icon>
+        <ion-input type="text" placeholder="Por exemplo: Trabalha na UFLA" [(ngModel)]="employee.obs">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
