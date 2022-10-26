@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CONTRACTS } from 'src/app/data-sources/contracts.ds';
 import { EMPLOYERS } from 'src/app/data-sources/employers.ds';
 import { CommonMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
 import { Field, Problem } from 'src/app/shared/helpers/problem';
@@ -25,13 +26,20 @@ export class EmployerService {
     const index = EMPLOYERS.findIndex(item => item.id == id)
 
     if (index < 0) {
+      return null
+    }
+
+    const isEmployerInUse = CONTRACTS.find(contract => {
+      return (contract.employer && contract.employer.id === id)
+    }) ? true : false
+
+    if (isEmployerInUse) {
       return {
-        message: CommonMsg.RECORD_NOT_FOUND
+        message: CommonMsg.RECORD_IN_USE
       }
     }
 
     EMPLOYERS.splice(index, 1)
-
     return null
   }
 

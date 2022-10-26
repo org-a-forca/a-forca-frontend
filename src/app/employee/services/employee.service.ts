@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CONTRACTS } from 'src/app/data-sources/contracts.ds';
 import { EMPLOYEES } from 'src/app/data-sources/employees.ds';
 import { CommonMsg, EmployeeMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
 import { Field, Problem } from 'src/app/shared/helpers/problem';
@@ -25,13 +26,20 @@ export class EmployeeService {
     const index = EMPLOYEES.findIndex(item => item.id == id)
 
     if (index < 0) {
+      return null
+    }
+
+    const isEmployeeInUse = CONTRACTS.find(contract => {
+      return (contract.employee && contract.employee.id === id)
+    }) ? true : false
+
+    if (isEmployeeInUse) {
       return {
-        message: CommonMsg.RECORD_NOT_FOUND
+        message: CommonMsg.RECORD_IN_USE
       }
     }
 
     EMPLOYEES.splice(index, 1)
-
     return null
   }
 

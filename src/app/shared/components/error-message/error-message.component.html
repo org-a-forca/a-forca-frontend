@@ -3,7 +3,7 @@
     <ion-label>{{problem.message}}</ion-label>
   </ion-item-divider>
 
-  <ion-item lines="none">
+  <ion-item lines="none" *ngIf="problem.fields && problem.fields.length > 0">
     <ion-label class="ion-text-wrap">
       <p *ngFor="let field of problem.fields" ><strong>{{field.name}}</strong>: {{field.message}}</p>
     </ion-label>

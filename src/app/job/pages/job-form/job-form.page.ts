@@ -31,13 +31,13 @@ export class JobFormPage {
   }
 
   constructor(private jobService: JobService, private router: Router,
-    private route: ActivatedRoute, private uiService: UiService) { 
-      this.reset()
-    }
+    private route: ActivatedRoute, private uiService: UiService) {
+    this.reset()
+  }
 
   async ionViewDidEnter(): Promise<void> {
     this.reset()
-    
+
     this.categories = await this.jobService.getCategories()
     const jobId = this.route.snapshot.paramMap.get('id')
     if (jobId) {
@@ -56,7 +56,7 @@ export class JobFormPage {
       return
     }
 
-    this.job = JSON.parse(JSON.stringify(data));    
+    this.job = JSON.parse(JSON.stringify(data));
   }
 
   async onSave(): Promise<void> {
@@ -73,7 +73,7 @@ export class JobFormPage {
 
   }
 
-  compareWith(j1: Category, j2: Category) {
+  compareCategories(j1: Category, j2: Category) {
     return j1 && j2 ? j1.id === j2.id : j1 === j2;
   }
 

@@ -1,10 +1,10 @@
-import { JobDto } from "src/app/job/entities/job"
+import { Job } from "src/app/job/entities/job"
 
 export type Employee = {
     id: number,
     name: string,
     phone: string,
-    jobs: JobDto[],
+    jobs: Partial<Job>[],
     address: string,
     email: string,
     references: string,
@@ -13,9 +13,4 @@ export type Employee = {
     lastContractAt: Date,
     constraints: string,
     obs: string
-}
-
-export type EmployeeDto = {
-    id: number,
-    name: string,
 }

@@ -7,8 +7,3 @@ export type Employer = {
     registeredAt: Date,
     obs: string
 }
-
-export type EmployerDto = {
-    id: number,
-    name: string
-}

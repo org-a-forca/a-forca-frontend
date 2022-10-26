@@ -9,12 +9,12 @@ import { FormsModule } from '@angular/forms';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 
 import { BrMaskerModule } from 'br-mask';
-import { JobsPipe } from './pipe/jobs.pipe';
+import { JobsPipe } from './pipes/jobs.pipe';
 import { JobListItemComponent } from './components/job-list-item/job-list-item.component';
-import { ContractStatusPipe } from './pipe/contract-status.pipe';
+import { ContractStatusPipe } from './pipes/contract-status.pipe';
 import { EmployerListItemComponent } from './components/employer-list-item/employer-list-item.component';
 import { EmployeeListItemComponent } from './components/employee-list-item/employee-list-item.component';
-import { Num2strPipe } from './pipe/num2str.pipe';
+import { Num2strPipe } from './pipes/num2str.pipe';
 
 const exportedComponents = [
   ToolbarListComponent, ToolbarDetailsComponent, ToolbarFormDataComponent, 

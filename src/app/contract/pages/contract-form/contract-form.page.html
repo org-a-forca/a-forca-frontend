@@ -61,7 +61,7 @@
         </ion-label>
         <ion-icon slot="start" name="hammer-outline"></ion-icon>
         <ion-buttons slot="end">
-          <ion-button shape="round" color="primary" id="modal-employee">
+          <ion-button shape="round" color="primary" id="modal-employee" [disabled]="contract.id">
             <ion-icon slot="start" name="search"></ion-icon>
             Buscar
           </ion-button>

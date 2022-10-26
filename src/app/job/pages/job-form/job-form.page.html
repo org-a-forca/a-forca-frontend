@@ -21,7 +21,7 @@
         <ion-label position="stacked">Categoria *</ion-label>
         <ion-icon slot="start" name="layers-outline"></ion-icon>
         <ion-select interface="popover" [(ngModel)]="job.category" placeholder="Selecione uma..."
-          [compareWith]="compareWith">
+          [compareWith]="compareCategories">
           <ion-select-option [value]="cat" *ngFor="let cat of categories">{{cat.name}}</ion-select-option>
         </ion-select>
       </ion-item>

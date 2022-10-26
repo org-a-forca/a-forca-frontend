@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonModal } from '@ionic/angular';
 import { Job } from 'src/app/job/entities/job';
 import { JobService } from 'src/app/job/services/job.service';
-import { CommonMsg, EmployeeMsg } from 'src/app/shared/helpers/messages';
+import { CommonMsg, EmployeeMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
 import { Problem } from 'src/app/shared/helpers/problem';
 import { MessageType, UiService } from 'src/app/shared/services/ui.service';
 import { Employee } from '../../entities/employee';
@@ -108,7 +108,7 @@ export class EmployeeFormPage {
       return
     }
 
-    this.uiService.showToast(EmployeeMsg.JOB_ALREADY_ADDED_ERROR, MessageType.ERROR)
+    this.uiService.showToast(ValidationMsg.DUPLICATED_RECORD, MessageType.ERROR)
   }
 
 }

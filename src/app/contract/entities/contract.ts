@@ -1,5 +1,5 @@
-import { EmployeeDto } from "src/app/employee/entities/employee"
-import { EmployerDto } from "src/app/employer/entities/employer"
+import { Employee } from "src/app/employee/entities/employee"
+import { Employer } from "src/app/employer/entities/employer"
 
 export enum ContractStatus {
     OPEN = 'open',
@@ -15,8 +15,8 @@ export type ContractResult = {
 export type Contract = {
     id: number,
     date: Date,
-    employee: EmployeeDto,
-    employer: EmployerDto,
+    employee: Partial<Employee>,
+    employer: Partial<Employer>,
     description: string,
     status: ContractStatus
     result: ContractResult

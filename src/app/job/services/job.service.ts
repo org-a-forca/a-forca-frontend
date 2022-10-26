@@ -4,6 +4,7 @@ import { Job } from '../entities/job';
 import { JOBS, CATEGORIES } from 'src/app/data-sources/jobs.ds';
 import { Field, Problem } from 'src/app/shared/helpers/problem';
 import { CommonMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
+import { EMPLOYEES } from 'src/app/data-sources/employees.ds';
 
 @Injectable({
   providedIn: 'root'
@@ -23,16 +24,24 @@ export class JobService {
   }
 
   async delete(id: number): Promise<Problem> {
-    const index = JOBS.findIndex(item => item.id == id)
+    const index = JOBS.findIndex(job => job.id == id)
 
     if (index < 0) {
+      return null
+    }
+
+
+    const isJobInUse = EMPLOYEES.find(employee => {
+      return employee.jobs.find(job => job.id === id)
+    }) ? true : false
+
+    if (isJobInUse) {
       return {
-        message: CommonMsg.RECORD_NOT_FOUND
+        message: CommonMsg.RECORD_IN_USE
       }
     }
 
     JOBS.splice(index, 1)
-
     return null
   }
 
@@ -81,6 +90,13 @@ export class JobService {
       return {
         message: ValidationMsg.INVALID_FIELDS,
         fields: fields
+      }
+    }
+
+    const sameNameJob = JOBS.find(item => item.name === job.name)
+    if (sameNameJob && sameNameJob.id !== job.id) {
+      return {
+        message: ValidationMsg.DUPLICATED_RECORD
       }
     }
 

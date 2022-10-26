@@ -45,9 +45,9 @@ export class EmployerDetailsPage implements OnInit {
         await this.uiService.showToast(problem.message, MessageType.ERROR)
       } else {
         await this.uiService.showToast(EmployerMsg.DELETED)
+        this.router.navigate(['employer'])
       }      
 
-      this.router.navigate(['employer'])
     }
   }
 

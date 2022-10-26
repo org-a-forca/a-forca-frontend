@@ -40,9 +40,8 @@ export class JobDetailsPage implements OnInit {
         await this.uiService.showToast(problem.message, MessageType.ERROR)
       } else {
         await this.uiService.showToast(ServiceMsg.DELETED)
+        this.router.navigate(['job'])
       }      
-
-      this.router.navigate(['job'])
     }
   }
 

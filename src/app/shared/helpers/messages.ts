@@ -1,15 +1,15 @@
 // Common
 export const enum CommonMsg {
     RECORD_NOT_FOUND = 'Registro não encontrado!',
+    RECORD_IN_USE = 'Este registro está sendo utilizado por outro recurso!',
     OPERATION_NOT_PERFORMED = 'Não foi possível realizar esta operação!',
     CONFIRM_DELETE_RECORD = 'Deseja realmente excluir este registro?'
 }
 
-
-// Validation
 export const enum ValidationMsg {
     FIELD_REQUIRED = 'Este campo não pode ser vazio.',
-    INVALID_FIELDS = 'Um ou mais campos são inválidos!'    
+    INVALID_FIELDS = 'Um ou mais campos são inválidos!',   
+    DUPLICATED_RECORD = 'Registro já cadastrado!'    
 }
 
 // Services
@@ -28,7 +28,6 @@ export const enum EmployerMsg {
 export const enum EmployeeMsg {
     DELETED = 'Pessoa que trabalha removida com sucesso!',
     SAVED = 'Pessoa que trabalha salva com sucesso!',
-    JOB_ALREADY_ADDED_ERROR = 'Serviço já adicionado!'
 }
 
 // Employee

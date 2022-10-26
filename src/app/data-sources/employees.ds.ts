@@ -20,7 +20,7 @@ export const EMPLOYEES: Employee[] = [
         references: 'Gralha Azul',
         level: 2,
         registeredAt: new Date('05/07/2022'),
-        lastContractAt: new Date('05/08/2022'),
+        lastContractAt: new Date('10/25/2022'),
         constraints: '',
         obs: 'Estudante da UFLA'
     },
@@ -39,7 +39,7 @@ export const EMPLOYEES: Employee[] = [
         references: '',
         level: 1,
         registeredAt: new Date('08/12/2021'),
-        lastContractAt: null,
+        lastContractAt: new Date('07/12/2022'),
         constraints: 'Disponível 3a. ou 5a.',
         obs: ''
     }

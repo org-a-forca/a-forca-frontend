@@ -5,8 +5,3 @@ export type Job = {
     name: string,
     category: Category
 }
-
-export type JobDto = {
-    id: number,
-    name: string,
-}

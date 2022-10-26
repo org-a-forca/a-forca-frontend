@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CONTRACTS } from 'src/app/data-sources/contracts.ds';
+import { EMPLOYEES } from 'src/app/data-sources/employees.ds';
 import { CommonMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
 import { Field, Problem } from 'src/app/shared/helpers/problem';
-import { Contract, ContractStatus } from '../entities/contract';
+import { Contract } from '../entities/contract';
 
 @Injectable({
   providedIn: 'root'
@@ -43,12 +44,16 @@ export class ContractService {
       return problem
     }
 
-
     if (!contract.id) {
       contract.id = Date.now()
       contract.date = new Date()
-
       CONTRACTS.push(contract)
+    
+      const index = EMPLOYEES.findIndex(employee => employee.id == contract.employee.id)
+      if (index >= 0) {
+        EMPLOYEES[index].lastContractAt = new Date()
+      }
+    
     } else {
       const index = CONTRACTS.findIndex(item => item.id == contract.id)
       console.log(index)
