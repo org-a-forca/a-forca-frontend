@@ -22,7 +22,7 @@
         <ion-label>Dados profissionais</ion-label>
       </ion-item-divider>
       <ion-list lines="none">
-        <app-item iconName="hammer-outline" label="Serviço(s)" [value]="employee | jobs"></app-item>
+        <app-item iconName="hammer-outline" label="Serviço(s)" [value]="employee.jobs | jobs"></app-item>
         <app-item iconName="star-outline" label="Nível" [value]="employee.level | num2str"></app-item>
         <app-item iconName="calendar-outline" label="Data do cadastro"
           [value]="employee.registeredAt | date:'dd/MM/yyyy'"></app-item>

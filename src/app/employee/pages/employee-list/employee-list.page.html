@@ -3,5 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <app-employee-list-item [employees]="employees" (select)="onSelect($event)"></app-employee-list-item>
+  <app-employee-list-item [employees]="employees" 
+    (select)="onSelect($event)"
+    (search)="onSearch($event)"></app-employee-list-item>
 </ion-content>

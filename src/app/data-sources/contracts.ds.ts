@@ -6,37 +6,63 @@ export const CONTRACTS: Contract[] = [
         date: new Date('10/25/2022'),
         employee: {
             id: 1,
-            name: 'Carlos Alberto Luz'
+            name: 'Carlos Alberto Luz',
+            jobs: [
+                {
+                    id: 1,
+                    name: "Calhas e rufos",
+                },
+                {
+                    id: 2,
+                    name: "Carpintaria",
+                },
+            ],
         },
         employer: {
             id: 1,
-            name: 'Camila dos Reis',
+            name: 'Camila dos Reis'
         },
-        status: ContractStatus.FINISHED,
+        status: ContractStatus.ABERTO,
         result: {
             employeeRating: 1,
             employerRating: 1,
             obs: 'Pessoa que trabalha não fez contato'
         },
-        description: 'Pedreiro e  encanamentos',
+        servicesPerformed: [
+            {
+                id: 2,
+                name: "Carpintaria",
+            }
+        ],
     },
     {
         id: 2,
         date: new Date('07/12/2022'),
         employee: {
             id: 2,
-            name: 'Marilda Dias Lopes'
+            name: 'Marilda Dias Lopes',
+            jobs: [
+                {
+                    id: 6,
+                    name: "Faxina",
+                }
+            ],
         },
         employer: {
             id: 1,
             name: 'Camila dos Reis'
         },
-        status: ContractStatus.OPEN,
+        status: ContractStatus.ABERTO,
         result: {
             employeeRating: null,
             employerRating: null,
             obs: ''
         },
-        description: 'Retireiro'
+        servicesPerformed: [
+            {
+                id: 6,
+                name: "Faxina",
+            }
+        ]
     }
 ]

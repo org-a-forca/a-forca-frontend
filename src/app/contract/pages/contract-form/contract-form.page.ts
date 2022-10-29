@@ -5,6 +5,7 @@ import { Employee } from 'src/app/employee/entities/employee';
 import { EmployeeService } from 'src/app/employee/services/employee.service';
 import { Employer } from 'src/app/employer/entities/employer';
 import { EmployerService } from 'src/app/employer/services/employer.service';
+import { Job } from 'src/app/job/entities/job';
 import { CommonMsg, ContractMsg } from 'src/app/shared/helpers/messages';
 import { Problem } from 'src/app/shared/helpers/problem';
 import { MessageType, UiService } from 'src/app/shared/services/ui.service';
@@ -21,24 +22,28 @@ export class ContractFormPage {
   problem: Problem
   employers: Employer[]
   employees: Employee[]
-  contractStatus: ContractStatus[]
+  employeesCopy: Employee[]
+  contractStatuses: ContractStatus[]
 
-  @ViewChild('modalEmployer') modalEmployer: IonModal;
-  @ViewChild('modalEmployee') modalEmployee: IonModal;
+  isEmployeeModalOpen: boolean;
+  isEmployerModalOpen: boolean;
 
   private reset(): void {
     this.problem = null
-    this.contractStatus = [
-      ContractStatus.OPEN, ContractStatus.FINISHED
+    this.contractStatuses = [
+      ContractStatus.ABERTO, ContractStatus.DESISTIU, ContractStatus.FEITO,
+      ContractStatus.PARA_DEPOIS, ContractStatus.PEGOU_FORA
     ]
+    this.isEmployeeModalOpen = false
+    this.isEmployerModalOpen = false
 
     this.contract = {
       id: null,
-      description: '',
+      servicesPerformed: [],
       date: null,
       employee: null,
       employer: null,
-      status: ContractStatus.OPEN,
+      status: ContractStatus.ABERTO,
       result: {
         employeeRating: null,
         employerRating: null,
@@ -59,8 +64,6 @@ export class ContractFormPage {
 
   async ionViewDidEnter(): Promise<void> {
     this.reset()
-    this.employees = await this.employeeService.getAll()
-    this.employers = await this.employerService.getAll()
 
     const contractId = this.route.snapshot.paramMap.get('id')
     if (contractId) {
@@ -79,7 +82,7 @@ export class ContractFormPage {
       return
     }
 
-    this.contract = JSON.parse(JSON.stringify(data));
+    this.contract = data
   }
 
   async onSave(): Promise<void> {
@@ -100,11 +103,44 @@ export class ContractFormPage {
   // Modal
   onSelectEmployer(employer: Employer): void {
     this.contract.employer = employer
-    this.modalEmployer.dismiss()
+    this.setEmployerModalOpen(false)
   }
 
   onSelectEmployee(employee: Employee): void {
     this.contract.employee = employee
-    this.modalEmployee.dismiss()
+    this.contract.servicesPerformed = []
+    this.setEmployeeModalOpen(false)
+  }
+
+  async setEmployeeModalOpen(isOpen: boolean): Promise<void> {
+    if (isOpen) {
+      this.employees = await this.employeeService.getAll()
+      this.employeesCopy = [...this.employees]
+    }
+
+    this.isEmployeeModalOpen = isOpen;
+  }
+
+  async setEmployerModalOpen(isOpen: boolean): Promise<void> {
+    if (isOpen) {
+      this.employers = await this.employerService.getAll()
+    }
+
+    this.isEmployerModalOpen = isOpen;
+  }
+
+  compareJobs(j1: Partial<Job>, j2: Partial<Job>) {
+    return j1 && j2 ? j1.id === j2.id : j1 === j2;
+  }
+
+  onSearch(text: string): void {
+    this.employees = this.employeesCopy.filter(
+      employee => this.getTextFromEmployee(employee).toLowerCase().indexOf(text.toLowerCase()) > -1
+    )
+  }
+
+  private getTextFromEmployee(employee: Employee) {
+    let resp = employee.name + ' '
+    return resp + employee.jobs.map(job => job.name).join(' ')
   }
 }

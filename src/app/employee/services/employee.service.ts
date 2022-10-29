@@ -19,7 +19,8 @@ export class EmployeeService {
   }
 
   async getById(id: number): Promise<Employee> {
-    return EMPLOYEES.find(item => item.id == id)
+    const employee = EMPLOYEES.find(item => item.id == id)
+    return employee ? JSON.parse(JSON.stringify(employee)) : null
   }
 
   async delete(id: number): Promise<Problem> {

@@ -10,9 +10,9 @@
         <ion-label>Dados contratuais</ion-label>
       </ion-item-divider>
       <ion-list lines="none">
-        <app-item iconName="information-circle-outline" label="Descrição" [value]="contract.description"></app-item>
-        <app-item iconName="hammer-outline" label="Quem trabalhou" [value]="contract.employee.name"></app-item>
         <app-item iconName="briefcase-outline" label="Contratante" [value]="contract.employer.name"></app-item>
+        <app-item iconName="hammer-outline" label="Quem trabalhou" [value]="contract.employee.name"></app-item>
+        <app-item iconName="information-circle-outline" label="Serviço(s) realizado(s)" [value]="contract.servicesPerformed | jobs"></app-item>
         <app-item iconName="calendar-outline" label="Data" [value]="contract.date | date:'dd/MM/yyyy'"></app-item>
         <app-item iconName="scale-outline" label="Status" [value]="contract.status | contractStatus"></app-item>
       </ion-list>

@@ -15,6 +15,7 @@ import { ContractStatusPipe } from './pipes/contract-status.pipe';
 import { EmployerListItemComponent } from './components/employer-list-item/employer-list-item.component';
 import { EmployeeListItemComponent } from './components/employee-list-item/employee-list-item.component';
 import { Num2strPipe } from './pipes/num2str.pipe';
+import { TimeagoPipe } from './pipes/timeago.pipe';
 
 const exportedComponents = [
   ToolbarListComponent, ToolbarDetailsComponent, ToolbarFormDataComponent, 
@@ -23,7 +24,7 @@ const exportedComponents = [
 ]
 
 @NgModule({
-  declarations: [exportedComponents],
+  declarations: [exportedComponents, TimeagoPipe],
   imports: [
     CommonModule,
     IonicModule,

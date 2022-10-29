@@ -13,8 +13,8 @@
       button [routerLink]="['/contract/details', contract.id]" 
       class="ion-padding-top">
       <ion-label>
-        <h2><strong>{{contract.description}}</strong></h2>
-        <p>{{contract.employee.name}} ➜ {{contract.employer.name}}</p>
+        <h2>{{contract.employee.name}} <strong>para</strong> {{contract.employer.name}}</h2>
+        <p>{{contract.date | date:'dd/MM/yyyy'}}</p>
 
       </ion-label>
     </ion-item>

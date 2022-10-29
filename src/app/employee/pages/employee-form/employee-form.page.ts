@@ -69,7 +69,7 @@ export class EmployeeFormPage {
       return
     }
 
-    this.employee = JSON.parse(JSON.stringify(data));
+    this.employee = data
   }
 
   async onSave(): Promise<void> {

@@ -10,6 +10,7 @@ import { EmployeeService } from '../../services/employee.service';
 export class EmployeeListPage {
 
   employees: Employee[] = []
+  employeesCopy: Employee[] = []
 
   constructor(
     private employeeService: EmployeeService,
@@ -18,6 +19,7 @@ export class EmployeeListPage {
 
   async ionViewDidEnter(): Promise<void> {
     this.employees = await this.employeeService.getAll()
+    this.employeesCopy = [...this.employees]
   }
 
   onAdd(): void {
@@ -28,4 +30,14 @@ export class EmployeeListPage {
     this.router.navigate(['employee', 'details', employee.id])
   }
 
+  onSearch(text: string): void {
+    this.employees = this.employeesCopy.filter(
+      employee => this.getTextFromEmployee(employee).toLowerCase().indexOf(text.toLowerCase()) > -1
+    )
+  }
+
+  private getTextFromEmployee(employee: Employee) {
+    let resp = employee.name + ' '
+    return resp + employee.jobs.map(job => job.name).join(' ')
+  }
 }

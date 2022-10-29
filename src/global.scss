@@ -52,3 +52,7 @@ ion-toast.toast-success::part(icon) {
 ion-toast.toast-error::part(icon) {
     color: var(--ion-color-danger);
 }
+
+.searchbar {
+    --box-shadow: none;
+}

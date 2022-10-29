@@ -12,14 +12,15 @@ export class ContractService {
 
   async getAll(): Promise<Contract[]> {
     return CONTRACTS.sort((a, b) => {
-      if (a.description > b.description) { return 1; }
-      if (b.description > a.description) { return -1; }
+      if (a.date > b.date) { return 1; }
+      if (b.date > a.date) { return -1; }
       return 0;
     })
   }
 
   async getById(id: number): Promise<Contract> {
-    return CONTRACTS.find(item => item.id == id)
+    const contract = CONTRACTS.find(item => item.id == id)
+    return contract ? JSON.parse(JSON.stringify(contract)) : null
   }
 
   async delete(id: number): Promise<Problem> {
@@ -48,12 +49,6 @@ export class ContractService {
       contract.id = Date.now()
       contract.date = new Date()
       CONTRACTS.push(contract)
-    
-      const index = EMPLOYEES.findIndex(employee => employee.id == contract.employee.id)
-      if (index >= 0) {
-        EMPLOYEES[index].lastContractAt = new Date()
-      }
-    
     } else {
       const index = CONTRACTS.findIndex(item => item.id == contract.id)
       console.log(index)
@@ -68,13 +63,6 @@ export class ContractService {
 
   private validate(contract: Contract) {
     let fields: Field[] = []
-
-    if (contract.description.trim() === '') {
-      fields.push({
-        name: 'Descrição',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
 
     if (!contract.employee) {
       fields.push({

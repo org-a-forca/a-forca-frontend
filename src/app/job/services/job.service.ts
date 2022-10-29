@@ -20,7 +20,8 @@ export class JobService {
   }
 
   async getById(id: number): Promise<Job> {
-    return JOBS.find(item => item.id == id)
+    const job = JOBS.find(item => item.id == id)
+    return job ? JSON.parse(JSON.stringify(job)) : null
   }
 
   async delete(id: number): Promise<Problem> {

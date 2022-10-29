@@ -56,7 +56,7 @@ export class JobFormPage {
       return
     }
 
-    this.job = JSON.parse(JSON.stringify(data));
+    this.job = data;
   }
 
   async onSave(): Promise<void> {
