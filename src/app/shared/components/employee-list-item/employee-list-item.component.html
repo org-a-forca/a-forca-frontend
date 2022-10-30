@@ -12,11 +12,5 @@
       <h2><strong>{{employee.name}}</strong></h2>
       <p>{{employee.jobs | jobs}}</p>
     </ion-label>
-    <ion-note slot="end" *ngIf="employee.lastContractAt">
-      {{employee.lastContractAt | timeago}} atrás
-    </ion-note>
-    <ion-badge slot="start" color="light">
-      {{employee.level}} ★
-    </ion-badge>
   </ion-item>
 </ion-list>
