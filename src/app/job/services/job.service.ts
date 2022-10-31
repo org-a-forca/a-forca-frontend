@@ -63,7 +63,6 @@ export class JobService {
       JOBS.push(job)
     } else {
       const index = JOBS.findIndex(item => item.id == job.id)
-      console.log(index)
       if (index >= 0) {
         JOBS[index] = job
       }

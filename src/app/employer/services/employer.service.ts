@@ -63,7 +63,6 @@ export class EmployerService {
       EMPLOYERS.push(employer)
     } else {
       const index = EMPLOYERS.findIndex(item => item.id == employer.id)
-      console.log(index)
       if (index >= 0) {
         EMPLOYERS[index] = employer
       }

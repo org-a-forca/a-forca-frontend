@@ -51,7 +51,6 @@ export class ContractService {
       CONTRACTS.push(contract)
     } else {
       const index = CONTRACTS.findIndex(item => item.id == contract.id)
-      console.log(index)
       if (index >= 0) {
         CONTRACTS[index] = contract
       }
