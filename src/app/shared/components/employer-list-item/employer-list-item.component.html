@@ -1,11 +1,15 @@
 
 
 <ion-list lines="none" class="container">
+  <ion-searchbar class="searchbar" #searchbar debounce="700" (ionChange)="search.emit(searchbar.value)"
+    placeholder="Buscar por nome ou telefone"></ion-searchbar>
+
+
   <ion-item-divider>
     <ion-label>{{employers.length}} registro(s) encontrado(s)</ion-label>
   </ion-item-divider>
 
-  <ion-item *ngFor="let employer of employers" button (click)="select.emit(employer)" class="ion-padding-top">
+  <ion-item *ngFor="let employer of employers" button (click)="onSelect(employer)" class="ion-padding-top">
     <ion-label>
       <h2><strong>{{employer.name}}</strong></h2>
       <p>{{employer.phone}}</p>

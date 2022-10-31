@@ -10,6 +10,7 @@ import { EmployerService } from '../../services/employer.service';
 export class EmployerListPage {
 
   employers: Employer[] = []
+  employersCopy: Employer[] = []
 
   constructor(
     private employerService: EmployerService,
@@ -18,6 +19,7 @@ export class EmployerListPage {
 
   async ionViewDidEnter(): Promise<void> {
     this.employers = await this.employerService.getAll()
+    this.employersCopy = [...this.employers]
   }
 
   onAdd(): void {
@@ -26,5 +28,15 @@ export class EmployerListPage {
 
   onSelect(employer: Employer): void {
     this.router.navigate(['employer', 'details', employer.id])
+  }
+
+  onSearch(text: string): void {
+    this.employers = this.employersCopy.filter(
+      employer => this.getTextFromEmployer(employer).toLowerCase().indexOf(text.toLowerCase()) > -1
+    )
+  }
+
+  private getTextFromEmployer(employer: Employer): string {
+    return employer.name + ' ' + employer.phone
   }
 }

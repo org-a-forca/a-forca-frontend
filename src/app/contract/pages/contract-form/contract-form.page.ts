@@ -21,6 +21,7 @@ export class ContractFormPage {
   contract: Contract
   problem: Problem
   employers: Employer[]
+  employersCopy: Employer[]
   employees: Employee[]
   employeesCopy: Employee[]
   contractStatuses: ContractStatus[]
@@ -124,6 +125,7 @@ export class ContractFormPage {
   async setEmployerModalOpen(isOpen: boolean): Promise<void> {
     if (isOpen) {
       this.employers = await this.employerService.getAll()
+      this.employersCopy = [...this.employers]
     }
 
     this.isEmployerModalOpen = isOpen;
@@ -133,14 +135,24 @@ export class ContractFormPage {
     return j1 && j2 ? j1.id === j2.id : j1 === j2;
   }
 
-  onSearch(text: string): void {
+  onSearchEmployee(text: string): void {
     this.employees = this.employeesCopy.filter(
       employee => this.getTextFromEmployee(employee).toLowerCase().indexOf(text.toLowerCase()) > -1
     )
   }
 
-  private getTextFromEmployee(employee: Employee) {
+  private getTextFromEmployee(employee: Employee): string {
     let resp = employee.name + ' '
     return resp + employee.jobs.map(job => job.name).join(' ')
+  }
+
+  onSearchEmployer(text: string): void {
+    this.employers = this.employersCopy.filter(
+      employer => this.getTextFromEmployer(employer).toLowerCase().indexOf(text.toLowerCase()) > -1
+    )
+  }
+
+  private getTextFromEmployer(employer: Employer): string {
+    return employer.name + ' ' + employer.phone
   }
 }

@@ -73,9 +73,13 @@
             <ion-icon slot="start" name="search"></ion-icon>
             Buscar
           </ion-button>
+          <ion-button shape="round" color="primary" id="modal-new-job">
+            <ion-icon slot="start" name="add"></ion-icon>
+            Novo
+          </ion-button>
         </ion-buttons>
 
-        <ion-modal #modalJob trigger="modal-job">
+        <ion-modal #modalJob trigger="modal-job" [backdropDismiss]="false">
           <ng-template>
             <ion-header class="ion-no-border">
               <ion-toolbar color="secondary">
@@ -90,6 +94,25 @@
             </ion-header>
             <ion-content class="ion-padding">
               <app-job-list-item [jobs]="jobs" (select)="onSelectJob($event)"></app-job-list-item>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+
+        <ion-modal #modalNewJob trigger="modal-new-job" [backdropDismiss]="false">
+          <ng-template>
+            <ion-header class="ion-no-border">
+              <ion-toolbar color="secondary">
+                <ion-title>Novo serviço</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button shape="round" (click)="modalNewJob.dismiss()">
+                    <ion-icon slot="start" name="close"></ion-icon>
+                    Fechar
+                  </ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+              <app-job-add-modal (saved)="onJobSaved()"></app-job-add-modal>
             </ion-content>
           </ng-template>
         </ion-modal>

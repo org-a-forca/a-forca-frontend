@@ -4,6 +4,9 @@
 
 <ion-content>
 
-  <app-employer-list-item [employers]="employers" (select)="onSelect($event)"></app-employer-list-item>
+  <app-employer-list-item [employers]="employers" 
+  (select)="onSelect($event)"
+  (search)="onSearch($event)">
+</app-employer-list-item>
 
 </ion-content>

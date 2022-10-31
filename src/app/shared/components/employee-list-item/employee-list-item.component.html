@@ -1,6 +1,6 @@
 <ion-list lines="none" class="container">
   <ion-searchbar class="searchbar" #searchbar debounce="700" (ionChange)="search.emit(searchbar.value)"
-    placeholder="Buscar por nome ou serviços executados"></ion-searchbar>
+    placeholder="Buscar por nome ou serviços"></ion-searchbar>
 
 
   <ion-item-divider>
@@ -8,6 +8,12 @@
   </ion-item-divider>
 
   <ion-item *ngFor="let employee of employees" button (click)="onSelect(employee)" class="ion-padding-top">
+    <ion-badge slot="start" color="light">
+      Nível {{employee.level}}
+    </ion-badge>
+    <ion-badge slot="end" color="dark">
+      {{employee.lastContractAt | timeago}}
+    </ion-badge>
     <ion-label>
       <h2><strong>{{employee.name}}</strong></h2>
       <p>{{employee.jobs | jobs}}</p>

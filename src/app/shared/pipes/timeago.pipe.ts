@@ -6,31 +6,25 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class TimeagoPipe implements PipeTransform {
 
   transform(value: Date): string {
-    if (!value) return ''
+    if (!value) return 'Não possui'
 
     const seconds = Math.floor((Date.now() - value.getTime()) / 1000);
     let interval = seconds / 31536000;
 
     if (interval > 1) {
-      return Math.floor(interval) + "a";
+      return Math.floor(interval) + " anos";
     }
     interval = seconds / 2592000;
     if (interval > 1) {
-      return Math.floor(interval) + "m";
+      return Math.floor(interval) + " meses";
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      return Math.floor(interval) + "d";
+      return Math.floor(interval) + " dias";
     }
     interval = seconds / 3600;
-    if (interval > 1) {
-      return Math.floor(interval) + "h";
-    }
-    interval = seconds / 60;
-    if (interval > 1) {
-      return Math.floor(interval) + "min";
-    }
-    return Math.floor(seconds) + "s";
+  
+    return "Há poucas horas";
   }
 
 }

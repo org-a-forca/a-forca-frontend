@@ -20,6 +20,7 @@ export class EmployeeFormPage {
   jobs: Job[]
 
   @ViewChild("modalJob") modal: IonModal;
+  @ViewChild("modalNewJob") modalNewJob: IonModal;
 
   private reset(): void {
     this.problem = null
@@ -109,6 +110,10 @@ export class EmployeeFormPage {
     }
 
     this.uiService.showToast(ValidationMsg.DUPLICATED_RECORD, MessageType.ERROR)
+  }
+
+  onJobSaved(): void {
+    this.modalNewJob.dismiss()
   }
 
 }

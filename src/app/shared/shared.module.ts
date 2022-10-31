@@ -16,9 +16,10 @@ import { EmployerListItemComponent } from './components/employer-list-item/emplo
 import { EmployeeListItemComponent } from './components/employee-list-item/employee-list-item.component';
 import { Num2strPipe } from './pipes/num2str.pipe';
 import { TimeagoPipe } from './pipes/timeago.pipe';
+import { JobAddModalPage } from './components/job-add-modal/job-add-modal.page';
 
 const exportedComponents = [
-  ToolbarListComponent, ToolbarDetailsComponent, ToolbarFormDataComponent, 
+  ToolbarListComponent, ToolbarDetailsComponent, ToolbarFormDataComponent, JobAddModalPage,
   JobListItemComponent, ItemComponent, ErrorMessageComponent, JobsPipe, ContractStatusPipe,
   EmployerListItemComponent, EmployeeListItemComponent, Num2strPipe
 ]

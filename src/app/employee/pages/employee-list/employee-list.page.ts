@@ -36,7 +36,7 @@ export class EmployeeListPage {
     )
   }
 
-  private getTextFromEmployee(employee: Employee) {
+  private getTextFromEmployee(employee: Employee): string {
     let resp = employee.name + ' '
     return resp + employee.jobs.map(job => job.name).join(' ')
   }

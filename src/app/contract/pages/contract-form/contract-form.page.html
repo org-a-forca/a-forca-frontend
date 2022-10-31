@@ -41,7 +41,8 @@
               </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding">
-              <app-employer-list-item [employers]="employers" (select)="onSelectEmployer($event)">
+              <app-employer-list-item [employers]="employers" (search)="onSearchEmployer($event)"
+              (select)="onSelectEmployer($event)">
               </app-employer-list-item>
             </ion-content>
           </ng-template>
@@ -75,7 +76,7 @@
               </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding">
-              <app-employee-list-item [employees]="employees" (search)="onSearch($event)"
+              <app-employee-list-item [employees]="employees" (search)="onSearchEmployee($event)"
                 (select)="onSelectEmployee($event)"></app-employee-list-item>
             </ion-content>
           </ng-template>
