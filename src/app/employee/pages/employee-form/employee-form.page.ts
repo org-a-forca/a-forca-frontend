@@ -19,11 +19,13 @@ export class EmployeeFormPage {
   problem: Problem
   jobs: Job[]
 
-  @ViewChild("modalJob") modal: IonModal;
-  @ViewChild("modalNewJob") modalNewJob: IonModal;
+  isSearchJobModalOpen: boolean;
+  isNewJobModalOpen: boolean;
 
   private reset(): void {
     this.problem = null
+    this.isNewJobModalOpen = false
+    this.isSearchJobModalOpen = false
 
     this.employee = {
       id: null,
@@ -98,22 +100,34 @@ export class EmployeeFormPage {
     this.employee.jobs.splice(index, 1)
 
   }
-
+  Lucas
   // Modal
   onSelectJob(job: Job): void {
     const index = this.employee.jobs.findIndex(item => item.id == job.id)
 
     if (index < 0) {
       this.employee.jobs.push(job)
-      this.modal.dismiss()
+      this.setSearchJobModalOpen(false)
       return
     }
 
     this.uiService.showToast(ValidationMsg.DUPLICATED_RECORD, MessageType.ERROR)
   }
 
-  onJobSaved(): void {
-    this.modalNewJob.dismiss()
+  async onJobSaved(): Promise<void> {
+    this.jobs = await this.jobService.getAll()
+    this.setNewJobModalOpen(false)
   }
 
+  async setSearchJobModalOpen(isOpen: boolean): Promise<void> {
+    this.isSearchJobModalOpen = isOpen;
+  }
+
+  async setNewJobModalOpen(isOpen: boolean): Promise<void> {
+    if (isOpen) {
+      this.jobs = await this.jobService.getAll()
+    }
+
+    this.isNewJobModalOpen = isOpen;
+  }
 }

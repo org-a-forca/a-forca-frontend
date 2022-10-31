@@ -26,8 +26,8 @@ export class ContractFormPage {
   employeesCopy: Employee[]
   contractStatuses: ContractStatus[]
 
-  isEmployeeModalOpen: boolean;
-  isEmployerModalOpen: boolean;
+  isEmployeeModalOpen: boolean
+  isEmployerModalOpen: boolean
 
   private reset(): void {
     this.problem = null

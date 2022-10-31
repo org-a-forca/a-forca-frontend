@@ -69,23 +69,23 @@
         <ion-label>Serviço(s) *</ion-label>
         <ion-icon slot="start" name="hammer-outline"></ion-icon>
         <ion-buttons slot="end">
-          <ion-button shape="round" color="primary" id="modal-job">
+          <ion-button shape="round" color="primary" (click)="setSearchJobModalOpen(true)">
             <ion-icon slot="start" name="search"></ion-icon>
             Buscar
           </ion-button>
-          <ion-button shape="round" color="primary" id="modal-new-job">
+          <ion-button shape="round" color="primary" (click)="setNewJobModalOpen(true)">
             <ion-icon slot="start" name="add"></ion-icon>
             Novo
           </ion-button>
         </ion-buttons>
 
-        <ion-modal #modalJob trigger="modal-job" [backdropDismiss]="false">
+        <ion-modal [isOpen]="isSearchJobModalOpen" [backdropDismiss]="false">
           <ng-template>
             <ion-header class="ion-no-border">
               <ion-toolbar color="secondary">
                 <ion-title>Serviços</ion-title>
                 <ion-buttons slot="end">
-                  <ion-button shape="round" (click)="modalJob.dismiss()">
+                  <ion-button shape="round" (click)="setSearchJobModalOpen(false)">
                     <ion-icon slot="start" name="close"></ion-icon>
                     Fechar
                   </ion-button>
@@ -98,13 +98,13 @@
           </ng-template>
         </ion-modal>
 
-        <ion-modal #modalNewJob trigger="modal-new-job" [backdropDismiss]="false">
+        <ion-modal [isOpen]="isNewJobModalOpen" [backdropDismiss]="false">
           <ng-template>
             <ion-header class="ion-no-border">
               <ion-toolbar color="secondary">
                 <ion-title>Novo serviço</ion-title>
                 <ion-buttons slot="end">
-                  <ion-button shape="round" (click)="modalNewJob.dismiss()">
+                  <ion-button shape="round" (click)="setNewJobModalOpen(false)">
                     <ion-icon slot="start" name="close"></ion-icon>
                     Fechar
                   </ion-button>
