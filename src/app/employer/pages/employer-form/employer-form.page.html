@@ -17,20 +17,20 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Nome *</ion-label>
         <ion-icon slot="start" name="information-circle-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: José da Silva" [(ngModel)]="employer.name"></ion-input>
+        <ion-input type="text" placeholder="Informe o nome do(a) contratante" [(ngModel)]="employer.name"></ion-input>
       </ion-item>
 
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Telefone *</ion-label>
         <ion-icon slot="start" name="call-outline"></ion-icon>
-        <ion-input type="text" [brmasker]="{phone: true}" placeholder="Por exemplo: (35) 99999-0000"
+        <ion-input type="text" [brmasker]="{phone: true}" placeholder="Informe o telefone do(a) contratante"
           [(ngModel)]="employer.phone"></ion-input>
       </ion-item>
 
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Endereço</ion-label>
         <ion-icon slot="start" name="home-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: Rua das Acácias, 99 - Cidade Jardim"
+        <ion-input type="text" placeholder="Informe o endereço do(a) contratante"
           [(ngModel)]="employer.address">
         </ion-input>
       </ion-item>
@@ -38,7 +38,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Email</ion-label>
         <ion-icon slot="start" name="mail-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: contratante@email.com" [(ngModel)]="employer.email">
+        <ion-input type="text" placeholder="Informe o email do(a) contratante" [(ngModel)]="employer.email">
         </ion-input>
       </ion-item>
     </ion-list>
@@ -53,7 +53,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Observações</ion-label>
         <ion-icon slot="start" name="document-text-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: Trabalha na UFLA" [(ngModel)]="employer.obs">
+        <ion-input type="text" placeholder="Informe as observações sobre o(a) contratante" [(ngModel)]="employer.obs">
         </ion-input>
       </ion-item>
     </ion-list>

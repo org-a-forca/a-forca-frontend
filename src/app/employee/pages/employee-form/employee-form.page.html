@@ -17,20 +17,20 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Nome *</ion-label>
         <ion-icon slot="start" name="information-circle-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: José da Silva" [(ngModel)]="employee.name"></ion-input>
+        <ion-input type="text" placeholder="Informe o nome da pessoa que trabalha" [(ngModel)]="employee.name"></ion-input>
       </ion-item>
 
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Telefone *</ion-label>
         <ion-icon slot="start" name="call-outline"></ion-icon>
-        <ion-input type="text" [brmasker]="{phone: true}" placeholder="Por exemplo: (35) 99999-0000"
+        <ion-input type="text" [brmasker]="{phone: true}" placeholder="Informe o telefone da pessoa que trabalha"
           [(ngModel)]="employee.phone"></ion-input>
       </ion-item>
 
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Endereço</ion-label>
         <ion-icon slot="start" name="home-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: Rua das Acácias, 99 - Cidade Jardim"
+        <ion-input type="text" placeholder="Informe o endereço da pessoa que trabalha"
           [(ngModel)]="employee.address">
         </ion-input>
       </ion-item>
@@ -38,7 +38,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Email</ion-label>
         <ion-icon slot="start" name="mail-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: contratante@email.com" [(ngModel)]="employee.email">
+        <ion-input type="text" placeholder="Informe o email da pessoa que trabalha" [(ngModel)]="employee.email">
         </ion-input>
       </ion-item>
 
@@ -54,13 +54,13 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Referências</ion-label>
         <ion-icon slot="start" name="people-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: Gralha Azul" [(ngModel)]="employee.references"></ion-input>
+        <ion-input type="text" placeholder="Informe as referências da pessoa que trabalha" [(ngModel)]="employee.references"></ion-input>
       </ion-item>
 
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Restrições</ion-label>
         <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: Disponível apenas às terças e quintas"
+        <ion-input type="text" placeholder="Informe as restrições da pessoa que trabalha"
           [(ngModel)]="employee.constraints">
         </ion-input>
       </ion-item>
@@ -138,7 +138,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Observações</ion-label>
         <ion-icon slot="start" name="document-text-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: Trabalha na UFLA" [(ngModel)]="employee.obs">
+        <ion-input type="text" placeholder="Informe as observações sobre a pessoa que trabalha" [(ngModel)]="employee.obs">
         </ion-input>
       </ion-item>
     </ion-list>

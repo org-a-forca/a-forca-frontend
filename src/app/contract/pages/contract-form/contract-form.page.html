@@ -96,7 +96,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Status</ion-label>
         <ion-icon slot="start" name="scale-outline"></ion-icon>
-        <ion-select interface="popover" [(ngModel)]="contract.status" placeholder="Selecione um...">
+        <ion-select interface="popover" [(ngModel)]="contract.status" placeholder="Selecione...">
           <ion-select-option [value]="status" *ngFor="let status of contractStatuses">{{status | contractStatus}}
           </ion-select-option>
         </ion-select>
@@ -115,7 +115,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Nota de quem trabalhou</ion-label>
         <ion-icon slot="start" name="star-outline"></ion-icon>
-        <ion-select interface="popover" placeholder="Selecione uma" [(ngModel)]="contract.result.employeeRating">
+        <ion-select interface="popover" placeholder="Selecione..." [(ngModel)]="contract.result.employeeRating">
           <ion-select-option [value]="grade" *ngFor="let grade of [1, 2, 3, 4, 5]">{{grade}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -123,7 +123,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Nota do(a) contratante</ion-label>
         <ion-icon slot="start" name="star-outline"></ion-icon>
-        <ion-select interface="popover" placeholder="Selecione uma" [(ngModel)]="contract.result.employerRating">
+        <ion-select interface="popover" placeholder="Selecione..." [(ngModel)]="contract.result.employerRating">
           <ion-select-option [value]="grade" *ngFor="let grade of [1, 2, 3, 4, 5]">{{grade}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -131,7 +131,7 @@
       <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
         <ion-label position="stacked">Observações</ion-label>
         <ion-icon slot="start" name="document-text-outline"></ion-icon>
-        <ion-input type="text" placeholder="Por exemplo: Contratante não entrou em contato"
+        <ion-input type="text" placeholder="Informe as observações do contrato"
           [(ngModel)]="contract.result.obs">
         </ion-input>
       </ion-item>

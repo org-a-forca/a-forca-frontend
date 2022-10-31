@@ -9,13 +9,13 @@
     <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
       <ion-label position="stacked">Nome *</ion-label>
       <ion-icon slot="start" name="information-circle-outline"></ion-icon>
-      <ion-input type="text" placeholder="Por exemplo: Faxina" [(ngModel)]="job.name"></ion-input>
+      <ion-input type="text" placeholder="Informe o nome do serviço" [(ngModel)]="job.name"></ion-input>
     </ion-item>
 
     <ion-item class="ion-align-items-center ion-padding-bottom" lines="none">
       <ion-label position="stacked">Categoria *</ion-label>
       <ion-icon slot="start" name="layers-outline"></ion-icon>
-      <ion-select interface="popover" [(ngModel)]="job.category" placeholder="Selecione uma..."
+      <ion-select interface="popover" [(ngModel)]="job.category" placeholder="Selecione..."
         [compareWith]="compareCategories">
         <ion-select-option [value]="cat" *ngFor="let cat of categories">{{cat.name}}</ion-select-option>
       </ion-select>
