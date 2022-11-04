@@ -1,0 +1,29 @@
+<ion-toolbar color="secondary">
+  <ion-title>{{title}}</ion-title>
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/" *ngIf="isFormPage || isDetailsPage"></ion-back-button>
+    <ion-menu-button *ngIf="isListPage"></ion-menu-button>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button shape="round" (click)="this.save.emit()" *ngIf="isFormModal || isFormPage">
+      <ion-icon slot="start" name="checkmark"></ion-icon>
+      Salvar
+    </ion-button>
+    <ion-button shape="round" (click)="this.close.emit()" *ngIf="isFormModal">
+      <ion-icon slot="start" name="close"></ion-icon>
+      Fechar
+    </ion-button>
+    <ion-button shape="round" (click)="this.add.emit()" *ngIf="isListPage">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Novo
+    </ion-button>
+    <ion-button shape="round" (click)="this.edit.emit()" *ngIf="isDetailsPage">
+      <ion-icon slot="start" name="create-outline"></ion-icon>
+      Editar
+    </ion-button>
+    <ion-button shape="round" (click)="this.delete.emit()" *ngIf="isDetailsPage">
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Excluir
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

@@ -1,5 +1,5 @@
 <ion-header class="ion-no-border">
-  <app-toolbar-form-data title="Formulário" (save)="onSave()"></app-toolbar-form-data>
+  <app-toolbar type="form-page" title="Formulário" (save)="onSave()"></app-toolbar>
 </ion-header>
 
 <ion-content>
@@ -90,7 +90,7 @@
                 </ion-buttons>
               </ion-toolbar>
             </ion-header>
-            <ion-content class="ion-padding">
+            <ion-content>
               <app-job-list-item [jobs]="jobs" (select)="onSelectJob($event)"></app-job-list-item>
             </ion-content>
           </ng-template>
@@ -109,7 +109,7 @@
                 </ion-buttons>
               </ion-toolbar>
             </ion-header>
-            <ion-content class="ion-padding">
+            <ion-content>
               <app-job-add-modal (saved)="onJobSaved()"></app-job-add-modal>
             </ion-content>
           </ng-template>

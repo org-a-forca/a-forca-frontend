@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { ToolbarListComponent } from './components/toolbar-list/toolbar-list.component';
-import { ToolbarDetailsComponent } from './components/toolbar-details/toolbar-details.component';
-import { ToolbarFormDataComponent } from './components/toolbar-form-data/toolbar-form-data.component';
 import { ItemComponent } from './components/item/item.component';
 import { FormsModule } from '@angular/forms';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
@@ -17,15 +14,19 @@ import { EmployeeListItemComponent } from './components/employee-list-item/emplo
 import { Num2strPipe } from './pipes/num2str.pipe';
 import { TimeagoPipe } from './pipes/timeago.pipe';
 import { JobAddModalPage } from './components/job-add-modal/job-add-modal.page';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 const exportedComponents = [
-  ToolbarListComponent, ToolbarDetailsComponent, ToolbarFormDataComponent, JobAddModalPage,
-  JobListItemComponent, ItemComponent, ErrorMessageComponent, JobsPipe, ContractStatusPipe,
-  EmployerListItemComponent, EmployeeListItemComponent, Num2strPipe
+  ToolbarComponent, JobAddModalPage, JobListItemComponent, ItemComponent, 
+  ErrorMessageComponent, EmployerListItemComponent, EmployeeListItemComponent
+]
+
+const exportedPipes = [
+  JobsPipe, ContractStatusPipe, Num2strPipe, TimeagoPipe
 ]
 
 @NgModule({
-  declarations: [exportedComponents, TimeagoPipe],
+  declarations: [exportedComponents, exportedPipes],
   imports: [
     CommonModule,
     IonicModule,
@@ -37,7 +38,8 @@ const exportedComponents = [
     IonicModule,
     FormsModule,
     BrMaskerModule,
-    exportedComponents
+    exportedComponents,
+    exportedPipes
   ]
 })
 export class SharedModule { }
