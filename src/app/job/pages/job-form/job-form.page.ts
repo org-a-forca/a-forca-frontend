@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonMsg, ServiceMsg } from 'src/app/shared/helpers/messages';
+import { Messages, ServiceMsg } from 'src/app/shared/helpers/messages';
+import { Params } from 'src/app/shared/helpers/params';
 import { Problem } from 'src/app/shared/helpers/problem';
-import { MessageType, UiService } from 'src/app/shared/services/ui.service';
+import { UiService } from 'src/app/shared/services/ui.service';
 import { Category } from '../../entities/category';
 import { Job } from '../../entities/job';
 import { JobService } from '../../services/job.service';
@@ -13,45 +14,39 @@ import { JobService } from '../../services/job.service';
 })
 export class JobFormPage {
 
-  job: Job
-  categories: Category[]
-  problem: Problem
+  job: Job = new Job()
+  categories: Category[] = []
+  currentProblem: Problem = null
 
-  private reset(): void {
-    this.problem = null
-
-    this.job = {
-      id: null,
-      name: '',
-      category: null
-    }
-
-    this.categories = []
-
+  constructor(
+    private jobService: JobService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private uiService: UiService) {
   }
 
-  constructor(private jobService: JobService, private router: Router,
-    private route: ActivatedRoute, private uiService: UiService) {
-    this.reset()
+  private reset(): void {
+    this.job = new Job()
+    this.currentProblem = null
+    this.categories = []
   }
 
   async ionViewDidEnter(): Promise<void> {
     this.reset()
 
     this.categories = await this.jobService.getCategories()
-    const jobId = this.route.snapshot.paramMap.get('id')
-    if (jobId) {
-      await this.loadJob(jobId)
+
+    const id = Params.readIdParam(this.route)
+    if (id) {
+      this.loadJob(id)
     }
   }
 
-  private async loadJob(id: string): Promise<void> {
-    const data = await this.jobService.getById(
-      Number.parseInt(id)
-    )
+  private async loadJob(id: number): Promise<void> {
+    const data = await this.jobService.getById(id)
 
     if (!data) {
-      await this.uiService.showToast(CommonMsg.RECORD_NOT_FOUND, MessageType.ERROR)
+      await this.uiService.showToastError(Messages.RECORD_NOT_FOUND)
       this.router.navigate(['job'])
       return
     }
@@ -60,17 +55,17 @@ export class JobFormPage {
   }
 
   async onSave(): Promise<void> {
+    this.currentProblem = null
+    const problem = await this.jobService.save(this.job)
 
-    this.problem = await this.jobService.save(this.job)
-
-    if (this.problem) {
-      await this.uiService.showToast(CommonMsg.OPERATION_NOT_PERFORMED, MessageType.ERROR)
-      return
+    if (problem) {
+      this.currentProblem = problem
+      await this.uiService.showToastError(Messages.OPERATION_NOT_PERFORMED)
+      return;
     }
 
     await this.uiService.showToast(ServiceMsg.SAVED)
     this.router.navigate(['job'])
-
   }
 
   compareCategories(j1: Category, j2: Category) {

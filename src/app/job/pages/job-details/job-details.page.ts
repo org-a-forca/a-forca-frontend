@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonMsg, ServiceMsg } from 'src/app/shared/helpers/messages';
-import { MessageType, UiService } from 'src/app/shared/services/ui.service';
+import { Messages } from 'src/app/shared/helpers/messages';
+import { Params } from 'src/app/shared/helpers/params';
+import { Problem } from 'src/app/shared/helpers/problem';
+import { UiService } from 'src/app/shared/services/ui.service';
 import { Job } from '../../entities/job';
 import { JobService } from '../../services/job.service';
 
@@ -9,20 +11,29 @@ import { JobService } from '../../services/job.service';
   selector: 'app-job-details',
   templateUrl: './job-details.page.html',
 })
-export class JobDetailsPage implements OnInit {
+export class JobDetailsPage {
 
-  job: Job
+  job: Job = null
+  currentProblem: Problem = null
 
   constructor(private router: Router, private route: ActivatedRoute,
     private jobService: JobService, private uiService: UiService) { }
 
-  async ngOnInit(): Promise<void> {
+  private reset(): void {
+    this.job = new Job()
+    this.currentProblem = null
+  }
+
+  async ionViewDidEnter(): Promise<void> {
+    this.reset()
+
     this.job = await this.jobService.getById(
-      Number.parseInt(this.route.snapshot.paramMap.get('id'))
+      Params.readIdParam(this.route)
     )
     if (!this.job) {
-      await this.uiService.showToast(CommonMsg.RECORD_NOT_FOUND, MessageType.ERROR)
+      await this.uiService.showToastError(Messages.RECORD_NOT_FOUND)
       this.router.navigate(['job'])
+      return
     }
   }
 
@@ -31,18 +42,23 @@ export class JobDetailsPage implements OnInit {
   }
 
   async onDelete(): Promise<void> {
-    const result = await this.uiService.showConfirmDialog(CommonMsg.CONFIRM_DELETE_RECORD)
+    this.currentProblem = null
+    const result = await this.uiService.showConfirmDeleteDialog()
 
-    if (result) {
-      const problem = await this.jobService.delete(this.job.id)
-      
-      if (problem) {
-        await this.uiService.showToast(problem.message, MessageType.ERROR)
-      } else {
-        await this.uiService.showToast(ServiceMsg.DELETED)
-        this.router.navigate(['job'])
-      }      
+    if (!result) {
+      return
     }
+
+    const problem = await this.jobService.delete(this.job.id)
+
+    if (problem) {
+      this.currentProblem = problem
+      await this.uiService.showToastError(Messages.OPERATION_NOT_PERFORMED)
+      return
+    }
+
+    await this.uiService.showToastSuccess(Messages.DELETED)
+    this.router.navigate(['job'])
   }
 
 }

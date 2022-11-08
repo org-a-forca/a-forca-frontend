@@ -79,17 +79,7 @@
 
         <ion-modal [isOpen]="isSearchJobModalOpen" [backdropDismiss]="false">
           <ng-template>
-            <ion-header class="ion-no-border">
-              <ion-toolbar color="secondary">
-                <ion-title>Serviços</ion-title>
-                <ion-buttons slot="end">
-                  <ion-button shape="round" (click)="setSearchJobModalOpen(false)">
-                    <ion-icon slot="start" name="close"></ion-icon>
-                    Fechar
-                  </ion-button>
-                </ion-buttons>
-              </ion-toolbar>
-            </ion-header>
+            <app-toolbar type="list-modal" title="Serviços" (close)="setSearchJobModalOpen(false)"></app-toolbar>
             <ion-content>
               <app-job-list-item [jobs]="jobs" (select)="onSelectJob($event)"></app-job-list-item>
             </ion-content>

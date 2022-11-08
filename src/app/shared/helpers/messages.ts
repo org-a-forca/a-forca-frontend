@@ -8,8 +8,8 @@ export const enum CommonMsg {
 
 export const enum ValidationMsg {
     FIELD_REQUIRED = 'Este campo não pode ser vazio.',
-    INVALID_FIELDS = 'Um ou mais campos são inválidos!',   
-    DUPLICATED_RECORD = 'Registro já cadastrado!'    
+    INVALID_FIELDS = 'Um ou mais campos são inválidos!',
+    DUPLICATED_RECORD = 'Registro já cadastrado!'
 }
 
 // Services
@@ -34,4 +34,17 @@ export const enum EmployeeMsg {
 export const enum ContractMsg {
     DELETED = 'Contrato removido com sucesso!',
     SAVED = 'Contrato salvo com sucesso!',
+}
+
+export const enum Messages {
+    ERROR_TITLE = 'Ops, algo deu errado!',
+    OPERATION_NOT_PERFORMED = 'Não foi possível realizar esta operação!',
+    DUPLICATED_RECORD = 'Registro já cadastrado!',
+    INVALID_FIELDS = 'Um ou mais campos são inválidos:',
+    FIELD_REQUIRED = 'este campo não pode ser vazio.',
+    RECORD_IN_USE = 'Este registro está sendo utilizado por outro recurso!',
+    RECORD_NOT_FOUND = 'Registro não encontrado!',
+    CONFIRM_DELETE_RECORD = 'Deseja realmente excluir este registro?',
+    SAVED = 'Registro salvo com sucesso!',
+    DELETED = 'Registro removido com sucesso!',    
 }

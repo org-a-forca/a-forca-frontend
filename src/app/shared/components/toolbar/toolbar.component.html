@@ -9,7 +9,7 @@
       <ion-icon slot="start" name="checkmark"></ion-icon>
       Salvar
     </ion-button>
-    <ion-button shape="round" (click)="this.close.emit()" *ngIf="isFormModal">
+    <ion-button shape="round" (click)="this.close.emit()" *ngIf="isFormModal || isListModal">
       <ion-icon slot="start" name="close"></ion-icon>
       Fechar
     </ion-button>

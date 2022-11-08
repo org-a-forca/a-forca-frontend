@@ -12,7 +12,9 @@ import { EMPLOYEES } from 'src/app/data-sources/employees.ds';
 export class JobService {
 
   async getAll(): Promise<Job[]> {
-    return JOBS.sort((a, b) => {
+    const jobs = JSON.parse(JSON.stringify(JOBS))
+
+    return jobs.sort((a: Job, b: Job) => {
       const nameA = a.name.toLowerCase()
       const nameB = b.name.toLowerCase()
 
@@ -40,9 +42,7 @@ export class JobService {
     }) ? true : false
 
     if (isJobInUse) {
-      return {
-        message: CommonMsg.RECORD_IN_USE
-      }
+      return Problem.RecordInUse()
     }
 
     JOBS.splice(index, 1)
@@ -76,31 +76,20 @@ export class JobService {
     let fields: Field[] = []
 
     if (job.name.trim() === '') {
-      fields.push({
-        name: 'Nome',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
+      fields.push(Field.Required('Nome'))
     }
 
     if (job.category == null) {
-      fields.push({
-        name: 'Categoria',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
+      fields.push(Field.Required('Categoria'))
     }
 
     if (fields.length !== 0) {
-      return {
-        message: ValidationMsg.INVALID_FIELDS,
-        fields: fields
-      }
+      return Problem.InvalidFields(fields)
     }
 
     const sameNameJob = JOBS.find(item => item.name === job.name)
     if (sameNameJob && sameNameJob.id !== job.id) {
-      return {
-        message: ValidationMsg.DUPLICATED_RECORD
-      }
+      return Problem.DuplicatedRecord()
     }
 
     return null

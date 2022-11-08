@@ -7,27 +7,31 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class ToolbarComponent {
 
   @Input() title = ''
-  @Input() type: 'form-modal' | 'form-page' | 'details-page' | 'list-page' = 'list-page'
+  @Input() type: 'form-modal' | 'form-page' | 'details-page' | 'list-page' | 'list-modal' = 'list-page'
   @Output() save = new EventEmitter<void>()
   @Output() close = new EventEmitter<void>()
   @Output() edit = new EventEmitter<void>()
   @Output() delete = new EventEmitter<void>()
   @Output() add = new EventEmitter<void>()
 
-  get isFormModal() {
+  get isFormModal(): boolean {
     return this.type === 'form-modal'
   }
 
-  get isFormPage() {
+  get isFormPage(): boolean {
     return this.type === 'form-page'
   }
 
-  get isDetailsPage() {
+  get isDetailsPage(): boolean {
     return this.type === 'details-page'
   }
 
-  get isListPage() {
+  get isListPage(): boolean {
     return this.type === 'list-page'
+  }
+
+  get isListModal(): boolean {
+    return this.type === 'list-modal'
   }
 
 }

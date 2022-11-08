@@ -3,8 +3,9 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="job">
+  <app-error-message [problem]="currentProblem"></app-error-message>
 
+  <div *ngIf="job">
     <div class="ion-text-center container">
       <ion-list lines="none">
         <app-item iconName="information-circle-outline" label="Nome" [value]="job.name">
@@ -15,7 +16,6 @@
 
       </ion-list>
     </div>
-
   </div>
 
 </ion-content>

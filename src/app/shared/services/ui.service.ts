@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { withRouterConfig } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { Messages } from '../helpers/messages';
 
 export enum MessageType {
   ERROR,
@@ -30,12 +31,16 @@ export class UiService {
     return (role === 'confirm')
   }
 
-  async showToast(text: string, type: MessageType = MessageType.SUCCESS ): Promise<void> {
+  async showConfirmDeleteDialog(): Promise<boolean> {
+    return this.showConfirmDialog(Messages.CONFIRM_DELETE_RECORD)
+  }
+
+  async showToast(text: string, type: MessageType = MessageType.SUCCESS): Promise<void> {
     const toast = await this.toastCtrl.create({
       message: text,
       icon: type == MessageType.SUCCESS ? 'checkmark' : 'alert-outline',
       duration: 2500,
-      buttons: [        
+      buttons: [
         {
           icon: 'close',
           role: 'cancel',
@@ -45,6 +50,14 @@ export class UiService {
     });
 
     await toast.present();
+  }
+
+  async showToastError(text: string): Promise<void> {
+    return this.showToast(text, MessageType.ERROR)
+  }
+
+  async showToastSuccess(text: string): Promise<void> {
+    return this.showToast(text, MessageType.SUCCESS)
   }
 }
 
