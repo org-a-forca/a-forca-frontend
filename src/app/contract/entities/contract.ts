@@ -3,11 +3,11 @@ import { Employer } from "src/app/employer/entities/employer"
 import { Job } from "src/app/job/entities/job"
 
 export enum ContractStatus {
-    ABERTO = 'aberto',
-    PEGOU_FORA = 'pegou_fora',
-    DESISTIU = 'desistiu',
-    PARA_DEPOIS = 'para_depois',
-    FEITO = 'feito',
+    ABERTO = 'Aberto',
+    PEGOU_FORA = 'Pegou fora',
+    DESISTIU = 'Desistiu',
+    PARA_DEPOIS = 'Para depois',
+    FEITO = 'Feito'
 }
 
 export type ContractResult = {
@@ -19,9 +19,10 @@ export type ContractResult = {
 export type Contract = {
     id: number,
     date: Date,
-    employee: Partial<Employee>,
+    employee: Employee,
     employer: Partial<Employer>,
     servicesPerformed: Partial<Job>[],
-    status: ContractStatus
+    servicesPerformedIds: number[],
+    status: ContractStatus,
     result: ContractResult
 }

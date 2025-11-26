@@ -1,110 +1,123 @@
 import { Injectable } from '@angular/core';
-import { CONTRACTS } from 'src/app/data-sources/contracts.ds';
-import { EMPLOYEES } from 'src/app/data-sources/employees.ds';
-import { CommonMsg, EmployeeMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
-import { Field, Problem } from 'src/app/shared/helpers/problem';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 import { Employee } from '../entities/employee';
+import { Problem } from 'src/app/shared/helpers/problem';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
+  private apiUrl = `${environment.apiUrl}/trabalhador`;
+
+  constructor(private http: HttpClient) { }
+
+  private getHeaders() {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${environment.token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
+  // 🔹 LISTAR TODOS
   async getAll(): Promise<Employee[]> {
-    return EMPLOYEES.sort((a, b) => {
-      const nameA = a.name.toLowerCase()
-      const nameB = b.name.toLowerCase()
+    const response: any = await this.http
+      .get(this.apiUrl, { headers: this.getHeaders() })
+      .toPromise();
 
-      if (nameA > nameB) { return 1; }
-      if (nameB > nameA) { return -1; }
-      return 0;
-    })
-  }
-
-  async getById(id: number): Promise<Employee> {
-    const employee = EMPLOYEES.find(item => item.id == id)
-    return employee ? JSON.parse(JSON.stringify(employee)) : null
-  }
-
-  async delete(id: number): Promise<Problem> {
-    const index = EMPLOYEES.findIndex(item => item.id == id)
-
-    if (index < 0) {
-      return null
+    if (response.trabalhadores) {
+      return response.trabalhadores.map((t: any) => this.mapToEmployee(t));
     }
 
-    const isEmployeeInUse = CONTRACTS.find(contract => {
-      return (contract.employee && contract.employee.id === id)
-    }) ? true : false
+    return [];
+  }
 
-    if (isEmployeeInUse) {
-      return {
-        message: CommonMsg.RECORD_IN_USE
+  // 🔹 BUSCAR POR ID
+  async getById(id: number): Promise<Employee | null> {
+    try {
+      const t: any = await this.http
+        .get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
+        .toPromise();
+
+      return this.mapToEmployee(t);
+
+    } catch {
+      return null;
+    }
+  }
+
+  // 🔹 SALVAR (criar ou atualizar)
+  async save(employee: Employee): Promise<Problem | null> {
+    const telefoneLimpo = employee.phone ? employee.phone.replace(/\D/g, '') : '';
+
+    const body = {
+      nome: employee.name,
+      telefone: telefoneLimpo,
+      endereco: employee.address,
+      email: employee.email,
+      referencias: employee.references,
+      restricoes: employee.constraints,
+      observacoes: employee.obs,
+
+      // envia apenas os IDs dos serviços selecionados no formulário
+      servicosIds: employee.jobs?.map(j => j.id) || []
+    };
+
+    try {
+      if (!employee.id) {
+        await this.http
+          .post(this.apiUrl, body, { headers: this.getHeaders(), responseType: 'text' })
+          .toPromise();
+
+      } else {
+        await this.http
+          .put(`${this.apiUrl}/${employee.id}`, body, { headers: this.getHeaders(), responseType: 'text' })
+          .toPromise();
       }
-    }
 
-    EMPLOYEES.splice(index, 1)
-    return null
+      return null;
+
+    } catch {
+      return { message: 'Erro ao salvar trabalhador.' };
+    }
   }
 
-  async save(employee: Employee): Promise<Problem> {
+  // 🔹 EXCLUIR
+  async delete(id: number): Promise<Problem | null> {
+    try {
+      await this.http
+        .delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders(), responseType: 'text' })
+        .toPromise();
 
-    const problem = this.validate(employee)
+      return null;
 
-    if (problem) {
-      return problem
+    } catch {
+      return { message: 'Erro ao excluir trabalhador.' };
     }
-
-
-    if (!employee.id) {
-      employee.id = Date.now()
-      employee.registeredAt = new Date()
-      employee.level = 1
-
-      EMPLOYEES.push(employee)
-    } else {
-      const index = EMPLOYEES.findIndex(item => item.id == employee.id)
-      if (index >= 0) {
-        EMPLOYEES[index] = employee
-      }
-    }
-
-    return null
-
   }
 
-  private validate(employee: Employee) {
-    let fields: Field[] = []
+  // 🔹 CONVERSÃO DTO → FRONTEND
+  private mapToEmployee(t: any): Employee {
+    return {
+      id: t.id,
+      name: t.nome,
+      phone: t.telefone ?? '',
+      address: t.endereco ?? '',
+      email: t.email ?? '',
+      level: t.nivel ?? 1,
+      registeredAt: new Date(t.dataCadastro ?? new Date()),
+      lastContractAt: t.dataUltimoContrato ? new Date(t.dataUltimoContrato) : null,
+      references: t.referencias ?? '',
+      constraints: t.restricoes ?? '',
+      obs: t.observacoes ?? '',
 
-    if (employee.name.trim() === '') {
-      fields.push({
-        name: 'Nome',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
+      // serviços reais NÃO vêm do backend → montamos depois
+      jobs: [],
 
-    if (employee.phone.trim() === '') {
-      fields.push({
-        name: 'Telefone',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
-
-    if (!employee.jobs || employee.jobs.length == 0) {
-      fields.push({
-        name: 'Serviços',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
-
-
-    if (fields.length !== 0) {
-      return {
-        message: ValidationMsg.INVALID_FIELDS,
-        fields: fields
-      }
-    }
-
-    return null
+      // backend envia APENAS nome(s):
+      // "servicosNomes": "trabaio"
+      servicesNames: t.servicosNomes ?? ''
+    };
   }
 }

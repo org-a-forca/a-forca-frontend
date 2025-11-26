@@ -1,105 +1,122 @@
 import { Injectable } from '@angular/core';
-import { Category } from '../entities/category';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 import { Job } from '../entities/job';
-import { JOBS, CATEGORIES } from 'src/app/data-sources/jobs.ds';
-import { Field, Problem } from 'src/app/shared/helpers/problem';
-import { CommonMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
-import { EMPLOYEES } from 'src/app/data-sources/employees.ds';
+import { Category } from '../entities/category';
+import { Problem } from 'src/app/shared/helpers/problem';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobService {
 
+  private apiUrl = `${environment.apiUrl}/servico`;
+  private categoryUrl = `${environment.apiUrl}/categoria`;
+
+  constructor(private http: HttpClient) { }
+
+  private getHeaders() {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${environment.token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
   async getAll(): Promise<Job[]> {
-    const jobs = JSON.parse(JSON.stringify(JOBS))
+    const response: any = await this.http
+      .get(`${this.apiUrl}`, { headers: this.getHeaders() })
+      .toPromise();
 
-    return jobs.sort((a: Job, b: Job) => {
-      const nameA = a.name.toLowerCase()
-      const nameB = b.name.toLowerCase()
-
-      if (nameA > nameB) { return 1; }
-      if (nameB > nameA) { return -1; }
-      return 0;
-    })
-  }
-
-  async getById(id: number): Promise<Job> {
-    const job = JOBS.find(item => item.id == id)
-    return job ? JSON.parse(JSON.stringify(job)) : null
-  }
-
-  async delete(id: number): Promise<Problem> {
-    const index = JOBS.findIndex(job => job.id == id)
-
-    if (index < 0) {
-      return null
+    if (response.servicos) {
+      return response.servicos.map((s: any) => ({
+        id: s.id,
+        name: s.nome,
+        category: s.categoriaNome ? { id: 0, name: s.categoriaNome } : null
+      }));
     }
 
-
-    const isJobInUse = EMPLOYEES.find(employee => {
-      return employee.jobs.find(job => job.id === id)
-    }) ? true : false
-
-    if (isJobInUse) {
-      return Problem.RecordInUse()
-    }
-
-    JOBS.splice(index, 1)
-    return null
+    return [];
   }
 
-  async save(job: Job): Promise<Problem> {
-
-    const problem = this.validate(job)
-
-    if (problem) {
-      return problem
+  async getById(id: number): Promise<Job | null> {
+    try {
+      const s: any = await this.http
+        .get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
+        .toPromise();
+      return this.mapToJob(s);
+    } catch {
+      return null;
     }
+  }
 
+  async save(job: Job): Promise<Problem | null> {
+    const body = {
+      nome: job.name,
+      categoriaId: job.category?.id
+    };
 
-    if (!job.id) {
-      job.id = Date.now()
-      JOBS.push(job)
-    } else {
-      const index = JOBS.findIndex(item => item.id == job.id)
-      if (index >= 0) {
-        JOBS[index] = job
+    try {
+      if (!job.id) {
+        await this.http
+          .post(this.apiUrl, body, { headers: this.getHeaders(), responseType: 'text' })
+          .toPromise();
+      } else {
+        await this.http
+          .put(`${this.apiUrl}/${job.id}`, body, { headers: this.getHeaders(), responseType: 'text' })
+          .toPromise();
       }
+
+      return null;
+    } catch {
+      return {
+        message: 'Erro ao salvar serviço'
+      };
     }
-
-    return null
-
   }
 
-  private validate(job: Job) {
-    let fields: Field[] = []
-
-    if (job.name.trim() === '') {
-      fields.push(Field.Required('Nome'))
+  async delete(id: number): Promise<Problem | null> {
+    try {
+      await this.http
+        .delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders(), responseType: 'text' })
+        .toPromise();
+      return null;
+    } catch {
+      return {
+        message: 'Erro ao excluir serviço'
+      };
     }
-
-    if (job.category == null) {
-      fields.push(Field.Required('Categoria'))
-    }
-
-    if (fields.length !== 0) {
-      return Problem.InvalidFields(fields)
-    }
-
-    const sameNameJob = JOBS.find(item => item.name === job.name)
-    if (sameNameJob && sameNameJob.id !== job.id) {
-      return Problem.DuplicatedRecord()
-    }
-
-    return null
   }
 
   async getCategories(): Promise<Category[]> {
-    return CATEGORIES.sort((a, b) => {
-      if (a.name > b.name) { return 1; }
-      if (b.name > a.name) { return -1; }
-      return 0;
-    })
+    const response: any = await this.http
+      .get(this.categoryUrl, { headers: this.getHeaders() })
+      .toPromise();
+
+    return response.map((c: any) => ({
+      id: c.id,
+      name: c.nome
+    }));
+  }
+
+  async createCategory(body: { nome: string }): Promise<any> {
+    return this.http
+      .post(`${this.categoryUrl}`, body, { headers: this.getHeaders() })
+      .toPromise();
+  }
+
+
+  private mapToJob(s: any): Job {
+    return {
+      id: s.id,
+      name: s.nome,
+      category: s.categoria ? this.mapToCategory(s.categoria) : null
+    };
+  }
+
+  private mapToCategory(c: any): Category {
+    return {
+      id: c.id,
+      name: c.nome
+    };
   }
 }
