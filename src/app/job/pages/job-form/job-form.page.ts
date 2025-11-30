@@ -7,6 +7,8 @@ import { UiService } from 'src/app/shared/services/ui.service';
 import { Category } from '../../entities/category';
 import { Job } from '../../entities/job';
 import { JobService } from '../../services/job.service';
+import { AlertController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-job-form',
@@ -22,8 +24,9 @@ export class JobFormPage {
     private jobService: JobService,
     private route: ActivatedRoute,
     private router: Router,
-    private uiService: UiService) {
-  }
+    private uiService: UiService,
+    private alertCtrl: AlertController
+  ) { }
 
   private reset(): void {
     this.job = new Job()
@@ -72,4 +75,48 @@ export class JobFormPage {
     return j1 && j2 ? j1.id === j2.id : j1 === j2;
   }
 
+  async onCategoryChange(event: any) {
+    const selected = event?.detail?.value;
+
+    if (selected === '__new__') {
+      const alert = await this.alertCtrl.create({
+        header: 'Nova Categoria',
+        inputs: [
+          { name: 'nome', type: 'text', placeholder: 'Ex: Tecnologia' }
+        ],
+        buttons: [
+          { text: 'Cancelar', role: 'cancel' },
+          {
+            text: 'Salvar',
+            handler: async (data) => {
+              const nome = (data?.nome || '').trim();
+              if (!nome) {
+                this.uiService.showToastError('Informe um nome válido.');
+                return false;
+              }
+
+              try {
+                const created: any = await this.jobService.createCategory({ nome });
+
+                const newCat = { id: created.id, name: created.nome };
+
+                this.categories.push(newCat);
+                this.job.category = newCat;
+
+                this.uiService.showToastSuccess('Categoria criada com sucesso!');
+              } catch {
+                this.uiService.showToastError('Erro ao criar categoria.');
+              }
+            }
+          }
+        ]
+      });
+
+      await alert.present();
+
+      if (this.job?.category && typeof this.job.category === 'string') {
+        this.job.category = null as any;
+      }
+    }
+  }
 }

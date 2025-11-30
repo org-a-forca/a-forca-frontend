@@ -1,102 +1,100 @@
 import { Injectable } from '@angular/core';
-import { CONTRACTS } from 'src/app/data-sources/contracts.ds';
-import { EMPLOYERS } from 'src/app/data-sources/employers.ds';
-import { CommonMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
-import { Field, Problem } from 'src/app/shared/helpers/problem';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 import { Employer } from '../entities/employer';
+import { Problem } from 'src/app/shared/helpers/problem';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployerService {
 
+  private apiUrl = `${environment.apiUrl}/contratante`;
+
+  constructor(private http: HttpClient) { }
+
+  private getHeaders() {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${environment.token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
   async getAll(): Promise<Employer[]> {
-    return EMPLOYERS.sort((a, b) => {
-      const nameA = a.name.toLowerCase()
-      const nameB = b.name.toLowerCase()
+    const response: any = await this.http
+      .get(this.apiUrl, { headers: this.getHeaders() })
+      .toPromise();
 
-      if (nameA > nameB) { return 1; }
-      if (nameB > nameA) { return -1; }
-      return 0;
-    })
-  }
-
-  async getById(id: number): Promise<Employer> {
-    const employer = EMPLOYERS.find(item => item.id == id)
-    return employer ? JSON.parse(JSON.stringify(employer)) : null
-  }
-
-  async delete(id: number): Promise<Problem> {
-    const index = EMPLOYERS.findIndex(item => item.id == id)
-
-    if (index < 0) {
-      return null
+    if (response.contratantes) {
+      return response.contratantes.map((c: any) => this.mapToEmployer(c));
     }
 
-    const isEmployerInUse = CONTRACTS.find(contract => {
-      return (contract.employer && contract.employer.id === id)
-    }) ? true : false
+    return [];
+  }
 
-    if (isEmployerInUse) {
+  async getById(id: number): Promise<Employer | null> {
+    try {
+      const c: any = await this.http
+        .get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
+        .toPromise();
+      return this.mapToEmployer(c);
+    } catch {
+      return null;
+    }
+  }
+
+  async save(employer: Employer): Promise<Problem | null> {
+    const telefoneLimpo = employer.phone ? employer.phone.replace(/\D/g, '') : '';
+
+    const body = {
+      nome: employer.name,
+      telefone: telefoneLimpo,
+      endereco: employer.address,
+      email: employer.email,
+      obs: employer.obs
+    };
+
+    try {
+      if (!employer.id) {
+        await this.http
+          .post(this.apiUrl, body, { headers: this.getHeaders(), responseType: 'text' })
+          .toPromise();
+      } else {
+        await this.http
+          .put(`${this.apiUrl}/${employer.id}`, body, { headers: this.getHeaders(), responseType: 'text' })
+          .toPromise();
+      }
+
+      return null;
+    } catch {
       return {
-        message: CommonMsg.RECORD_IN_USE
-      }
+        message: 'Erro ao salvar contratante'
+      };
     }
-
-    EMPLOYERS.splice(index, 1)
-    return null
   }
 
-  async save(employer: Employer): Promise<Problem> {
-
-    const problem = this.validate(employer)
-
-    if (problem) {
-      return problem
-    }
-
-
-    if (!employer.id) {
-      employer.id = Date.now()
-      employer.registeredAt = new Date()
-
-      EMPLOYERS.push(employer)
-    } else {
-      const index = EMPLOYERS.findIndex(item => item.id == employer.id)
-      if (index >= 0) {
-        EMPLOYERS[index] = employer
-      }
-    }
-
-    return null
-
-  }
-
-  private validate(employer: Employer) {
-    let fields: Field[] = []
-
-    if (employer.name.trim() === '') {
-      fields.push({
-        name: 'Nome',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
-
-    if (employer.phone.trim() === '') {
-      fields.push({
-        name: 'Telefone',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
-
-    if (fields.length !== 0) {
+  async delete(id: number): Promise<Problem | null> {
+    try {
+      await this.http
+        .delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders(), responseType: 'text' })
+        .toPromise();
+      return null;
+    } catch {
       return {
-        message: ValidationMsg.INVALID_FIELDS,
-        fields: fields
-      }
+        message: 'Erro ao excluir contratante'
+      };
     }
-
-    return null
   }
 
+  private mapToEmployer(c: any): Employer {
+    return {
+      id: c.id,
+      name: c.nome,
+      phone: c.telefone,
+      address: c.endereco ?? '',
+      email: c.email ?? '',
+      registeredAt: new Date(c.registeredAt ?? new Date()),
+      obs: c.obs ?? ''
+    };
+  }
 }

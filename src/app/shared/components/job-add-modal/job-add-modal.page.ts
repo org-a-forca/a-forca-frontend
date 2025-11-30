@@ -32,7 +32,7 @@ export class JobAddModalPage implements OnInit {
   }
 
   constructor(
-    private jobService: JobService, 
+    private jobService: JobService,
     private uiService: UiService) {
     this.reset()
   }

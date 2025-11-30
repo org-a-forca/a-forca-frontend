@@ -1,89 +1,193 @@
 import { Injectable } from '@angular/core';
-import { CONTRACTS } from 'src/app/data-sources/contracts.ds';
-import { EMPLOYEES } from 'src/app/data-sources/employees.ds';
-import { CommonMsg, ValidationMsg } from 'src/app/shared/helpers/messages';
-import { Field, Problem } from 'src/app/shared/helpers/problem';
-import { Contract } from '../entities/contract';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Contract, ContractStatus } from '../entities/contract';
+import { Problem } from 'src/app/shared/helpers/problem';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContractService {
 
+  private apiUrl = `${environment.apiUrl}/contrato`;
+
+  constructor(private http: HttpClient) { }
+
+  private getHeaders() {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${environment.token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+
+
   async getAll(): Promise<Contract[]> {
-    return CONTRACTS.sort((a, b) => {
-      if (a.date > b.date) { return 1; }
-      if (b.date > a.date) { return -1; }
-      return 0;
-    })
+    const response: any = await this.http
+      .get(this.apiUrl, { headers: this.getHeaders() })
+      .toPromise();
+
+    if (!response.contratos) return [];
+
+    return response.contratos.map((c: any) => ({
+      id: c.id ?? 0,
+
+      date: new Date((c.dataContrato ?? c.data) + 'T00:00:00'),
+
+      employee: {
+        id: 0,
+        name: c.nomeTrabalhador ?? ''
+      },
+
+      employer: {
+        id: 0,
+        name: c.nomeContratante ?? ''
+      },
+
+      servicesPerformed: [],
+      servicesPerformedIds: [],
+
+      status: this.mapStatusFromBackend(c.status),
+
+      result: {
+        employeeRating: 1,
+        employerRating: 1,
+        obs: ''
+      }
+    }));
   }
 
-  async getById(id: number): Promise<Contract> {
-    const contract = CONTRACTS.find(item => item.id == id)
-    return contract ? JSON.parse(JSON.stringify(contract)) : null
-  }
+  async getById(id: number): Promise<Contract | null> {
+    try {
+      const c: any = await this.http
+        .get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() })
+        .toPromise();
 
-  async delete(id: number): Promise<Problem> {
-    const index = CONTRACTS.findIndex(item => item.id == id)
-
-    if (index < 0) {
       return {
-        message: CommonMsg.RECORD_NOT_FOUND
-      }
+        id: c.id,
+        date: new Date((c.dataContrato ?? c.data) + 'T00:00:00'),
+
+        employee: {
+          id: c.trabalhador?.id ?? null,
+          name: c.trabalhador?.nome ?? '',
+          phone: c.trabalhador?.telefone ?? '',
+          address: c.trabalhador?.endereco ?? '',
+          email: c.trabalhador?.email ?? '',
+          jobs: [],
+          servicesNames: c.trabalhador?.servicosIds?.join(', ') ?? '',
+          references: c.trabalhador?.referencias ?? '',
+          level: c.trabalhador?.nivel ?? 1,
+          registeredAt: c.trabalhador?.dataCadastro ?? new Date(),
+          lastContractAt: c.trabalhador?.dataUltimoContrato ?? null,
+          constraints: c.trabalhador?.restricoes ?? '',
+          obs: c.trabalhador?.observacoes ?? ''
+        },
+
+        employer: c.contratante
+          ? { id: c.contratante.id, name: c.contratante.nome }
+          : {},
+
+        servicesPerformed: (c.servicosContratados || []).map((s: any) => ({
+          id: s.id,
+          name: s.nome
+        })),
+
+        servicesPerformedIds: (c.servicosContratados || []).map((s: any) => s.id),
+
+        status: this.mapStatusFromBackend(c.status),
+
+        result: {
+          employeeRating: c.notaTrabalhador ?? 1,
+          employerRating: c.notaContratante ?? 1,
+          obs: c.observacoes ?? ''
+        }
+      };
+
+    } catch (err) {
+      return null;
     }
-
-    CONTRACTS.splice(index, 1)
-
-    return null
   }
 
-  async save(contract: Contract): Promise<Problem> {
+  async save(contract: Contract): Promise<Problem | null> {
+    const body = {
+      trabalhadorId: contract.employee?.id,
+      contratanteId: contract.employer?.id,
+      servicosContratadosIds: contract.servicesPerformedIds || [],
+      status: contract.status,
+      nivel: contract.employee.level,
+    };
 
-    const problem = this.validate(contract)
-
-    if (problem) {
-      return problem
+    if (!body.trabalhadorId || !body.contratanteId) {
+      return { message: 'Campos obrigatórios não preenchidos.' };
     }
 
-    if (!contract.id) {
-      contract.id = Date.now()
-      contract.date = new Date()
-      CONTRACTS.push(contract)
-    } else {
-      const index = CONTRACTS.findIndex(item => item.id == contract.id)
-      if (index >= 0) {
-        CONTRACTS[index] = contract
+    if (!body.servicosContratadosIds.length) {
+      return { message: 'É necessário selecionar ao menos um serviço.' };
+    }
+
+    if (!body.status) {
+      return { message: 'O status é obrigatório.' };
+    }
+
+    try {
+      if (!contract.id) {
+        await this.http
+          .post(this.apiUrl, body, { headers: this.getHeaders() })
+          .toPromise();
+      } else {
+        await this.http
+          .put(`${this.apiUrl}/${contract.id}`, body, { headers: this.getHeaders() })
+          .toPromise();
       }
-    }
 
-    return null
+      return null;
 
-  }
-
-  private validate(contract: Contract) {
-    let fields: Field[] = []
-
-    if (!contract.employee) {
-      fields.push({
-        name: 'Que trabalha',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
-
-    if (!contract.employer) {
-      fields.push({
-        name: 'Contratante',
-        message: ValidationMsg.FIELD_REQUIRED
-      })
-    }
-
-    if (fields.length !== 0) {
+    } catch (err: any) {
       return {
-        message: ValidationMsg.INVALID_FIELDS,
-        fields: fields
-      }
+        message:
+          err.error?.status ||
+          err.error?.message ||
+          'Erro ao salvar contrato'
+      };
     }
+  }
 
-    return null
+  async delete(id: number): Promise<Problem | null> {
+    try {
+      await this.http
+        .delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders(), responseType: 'text' })
+        .toPromise();
+
+      return null;
+
+    } catch {
+      return { message: 'Erro ao excluir contrato.' };
+    }
+  }
+
+  private mapStatusFromBackend(raw: string): ContractStatus {
+    switch ((raw ?? '').toLowerCase()) {
+      case 'aberto':
+      case 'Aberto':
+        return ContractStatus.ABERTO;
+
+      case 'desistiu':
+      case 'Desistiu':
+        return ContractStatus.DESISTIU;
+
+      case 'feito':
+      case 'Feito':
+        return ContractStatus.FEITO;
+
+      case 'para depois':
+      case 'Para depois':
+        return ContractStatus.PARA_DEPOIS;
+
+      case 'pegou fora':
+      case 'Pegou fora':
+        return ContractStatus.PEGOU_FORA;
+
+      default:
+        return ContractStatus.ABERTO;
+    }
   }
 }
